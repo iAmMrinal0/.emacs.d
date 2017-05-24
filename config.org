@@ -747,13 +747,6 @@ For the fringe on the left with live changes
       (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 ** Themes
-*** Zerodark theme (currently unused)
-#+BEGIN_SRC emacs-lisp :results output silent
-  ;; (use-package zerodark-theme
-  ;;   :ensure t
-  ;;   :config
-  ;;   (zerodark-setup-modeline-format))
-#+END_SRC
 *** Doom theme and custom theme modifications (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent
   ;; (use-package doom-themes
@@ -795,15 +788,22 @@ For the fringe on the left with live changes
           sml/name-width 10)
     (sml/setup))
 #+END_SRC
+*** Zerodark modeline theme
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package zerodark-modeline
+    :load-path "custom/zerodark/"
+    :init
+    (zerodark-setup-modeline-format))
+#+END_SRC
 *** Powerline modeline with =wave= format
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package all-the-icons
     :ensure t)
 
-  (use-package powerline
-    :load-path "custom/powerline"
-    :config
-    (setq powerline-default-separator 'wave
-          powerline-display-buffer-size nil)
-    (powerline-default-theme))
+  ;; (use-package powerline
+  ;;   :load-path "custom/powerline"
+  ;;   :config
+  ;;   (setq powerline-default-separator 'wave
+  ;;         powerline-display-buffer-size nil)
+  ;;   (powerline-default-theme))
 #+END_SRC
