@@ -271,8 +271,8 @@ Use flyspell for =markdown= files
     :ensure t)
 #+END_SRC
 *** Git
-**** Git Messenger [[https://github.com/syohex/emacs-git-messenger][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+**** Git Messenger [[https://github.com/syohex/emacs-git-messenger][GitHub]] (currently unused)
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-messenger
     :ensure t
     :bind
@@ -481,8 +481,8 @@ Displays available keybindings in a popup
     (which-key-setup-side-window-bottom)
     (which-key-mode))
 #+END_SRC
-*** Winum Mode [[https://github.com/deb0ch/emacs-winum][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+*** Winum Mode [[https://github.com/deb0ch/emacs-winum][GitHub]] (currently unused)
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package winum
     :ensure t
     :config
@@ -748,7 +748,7 @@ For the fringe on the left with live changes
 #+END_SRC
 ** Themes
 *** Doom theme and custom theme modifications (currently unused)
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   ;; (use-package doom-themes
   ;;   :ensure t
   ;;   :init
