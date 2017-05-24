@@ -770,12 +770,12 @@ For the fringe on the left with live changes
   ;;  '(font-lock-function-name-face ((t (:foreground "#c678dd" :bold bold))))
   ;;  '(font-lock-keyword-face       ((t (:foreground "#51afef" :italic italic)))))
 #+END_SRC
-*** Dracula theme
+*** Gruvbox theme
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package dracula-theme
+  (use-package gruvbox-theme
     :ensure t
     :config
-    (load-theme 'dracula t))
+    (load-theme 'gruvbox t))
 #+END_SRC
 ** Mode-line
 *** Smart-mode-line
