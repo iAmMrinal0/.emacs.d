@@ -286,7 +286,7 @@ Use flyspell for =markdown= files
   (use-package git-timemachine
     :ensure t
     :bind
-    ("C-c C-g" . git-timemachine))
+    ("C-c C-x t" . git-timemachine))
 #+END_SRC
 **** Magit [[https://github.com/magit/magit][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
