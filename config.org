@@ -191,12 +191,6 @@ Revert buffers based on VC info
     (projectile-mode))
 #+END_SRC
 ** Packages
-*** Ag
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package ag
-    :ensure t)
-#+END_SRC
-
 *** Ace-window [[https://github.com/abo-abo/ace-window][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package ace-window
@@ -205,6 +199,17 @@ Revert buffers based on VC info
     ("M-p" . ace-window)
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+#+END_SRC
+*** Ag
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package ag
+    :ensure t)
+#+END_SRC
+
+*** All the icons
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package all-the-icons
+    :ensure t)
 #+END_SRC
 *** Anzu [[https://github.com/winterTTr/ace-jump-mode][GitHub]]
 For =current match= and =total match= information in the mode-line
@@ -240,6 +245,16 @@ For =current match= and =total match= information in the mode-line
   (use-package bs
     :bind
     ("M-g M-b" . bs-show))
+#+END_SRC
+*** Buffer Uniquify
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package uniquify
+    :config
+    (setq uniquify-buffer-name-style 'forward
+          uniquify-separator "/"
+          uniquify-after-kill-buffer-p t
+          uniquify-ignore-buffers-re "^\\*"))
+
 #+END_SRC
 *** Expand Region [[https://github.com/magnars/expand-region.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -366,32 +381,6 @@ Use flyspell for =markdown= files
     :config
     (global-hungry-delete-mode))
 #+END_SRC
-*** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package keyfreq
-    :ensure t
-    :config
-    (keyfreq-mode t)
-    (keyfreq-autosave-mode t))
-#+END_SRC
-*** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package multiple-cursors
-    :ensure t
-    :bind
-    ("C-S-c C-S-c" . mc/edit-lines)
-    ("C->" . mc/mark-next-like-this)
-    ("C-<" . mc/mark-previous-like-this)
-    ("C-c C-<" . mc/mark-all-like-this))
-#+END_SRC
-*** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package paradox
-    :ensure t
-    :defer t
-    :config
-    (setq paradox-execute-asynchronously t))
-#+END_SRC
 *** Ido
 **** Flx-ido
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -417,6 +406,32 @@ Use flyspell for =markdown= files
     :init
     (ido-vertical-mode t)
     (setq ido-vertical-define-keys 'C-n-C-p))
+#+END_SRC
+*** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package keyfreq
+    :ensure t
+    :config
+    (keyfreq-mode t)
+    (keyfreq-autosave-mode t))
+#+END_SRC
+*** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package multiple-cursors
+    :ensure t
+    :bind
+    ("C-S-c C-S-c" . mc/edit-lines)
+    ("C->" . mc/mark-next-like-this)
+    ("C-<" . mc/mark-previous-like-this)
+    ("C-c C-<" . mc/mark-all-like-this))
+#+END_SRC
+*** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package paradox
+    :ensure t
+    :defer t
+    :config
+    (setq paradox-execute-asynchronously t))
 #+END_SRC
 *** PDF Tools
 For better/faster PDF rendering
@@ -454,16 +469,6 @@ For better/faster PDF rendering
               undo-tree-visualizer-timestamps t)
         :init
         (global-undo-tree-mode))
-#+END_SRC
-*** Buffer Uniquify
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package uniquify
-    :config
-    (setq uniquify-buffer-name-style 'forward
-          uniquify-separator "/"
-          uniquify-after-kill-buffer-p t
-          uniquify-ignore-buffers-re "^\\*"))
-
 #+END_SRC
 *** Regex
 #+BEGIN_SRC emacs-lisp :results output silent
