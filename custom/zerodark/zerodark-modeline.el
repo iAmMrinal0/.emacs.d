@@ -218,10 +218,8 @@ The result is cached for one second to avoid hiccups."
   (require 'flycheck)
   (require 'magit)
   (let ((class '((class color) (min-colors 89)))
-        ;; (light (if (true-color-p) "#ccd4e3" "#d7d7d7"))
-        ;; (comment (if (true-color-p) "#687080" "#c678dd"))
-        (light (if (true-color-p) "#ccd40a" "#bd1123"))
-        (comment (if (true-color-p) "#87080a" "#c678dd"))
+        (light (if (true-color-p) "#ccd4e3" "#d7d7d7"))
+        (comment (if (true-color-p) "#687080" "#707070"))
         (purple "#c678dd")
         (mode-line (if "#1c2129" "#222222")))
     (custom-theme-set-faces
