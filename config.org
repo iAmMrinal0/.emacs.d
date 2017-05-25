@@ -256,6 +256,12 @@ For =current match= and =total match= information in the mode-line
           uniquify-ignore-buffers-re "^\\*"))
 
 #+END_SRC
+*** Diminish
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package diminish
+    :ensure t
+    :diminish (auto-revert-mode visual-line-mode))
+#+END_SRC
 *** Expand Region [[https://github.com/magnars/expand-region.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package expand-region
