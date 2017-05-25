@@ -797,7 +797,7 @@ For the fringe on the left with live changes
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package zerodark-modeline
     :load-path "custom/zerodark/"
-    :init
+    :config
     (zerodark-setup-modeline-format))
 #+END_SRC
 *** Powerline modeline with =wave= format
