@@ -786,7 +786,7 @@ For the fringe on the left with live changes
   (use-package gruvbox-theme
     :ensure t
     :config
-    (load-theme 'gruvbox t))
+    (load-theme 'gruvbox-dark-hard t))
 #+END_SRC
 ** Mode-line
 *** Smart-mode-line
