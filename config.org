@@ -383,6 +383,11 @@ Use flyspell for =markdown= files
     :config
     (helm-projectile-on))
 #+END_SRC
+*** Helm Ag
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package helm-ag
+    :ensure t)
+#+END_SRC
 *** Hungry Delete [[https://github.com/nflath/hungry-delete][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
 (use-package hungry-delete
@@ -485,6 +490,13 @@ For better/faster PDF rendering
 (use-package re-builder
   :init
   (setq reb-re-syntax 'string))
+#+END_SRC
+*** Smartscan [[https://github.com/mickeynp/smart-scan][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package smartscan
+    :ensure t
+    :init
+    (global-smartscan-mode))
 #+END_SRC
 *** Which key [[https://github.com/justbur/emacs-which-key][GitHub]]
 Displays available keybindings in a popup
