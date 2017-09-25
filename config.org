@@ -275,6 +275,10 @@ For =current match= and =total match= information in the mode-line
   (use-package flycheck
     :ensure t
     :defer t
+    :config
+    (define-key flycheck-mode-map flycheck-keymap-prefix nil)
+    (setq flycheck-keymap-prefix (kbd "C-c f"))
+    (define-key flycheck-mode-map flycheck-keymap-prefix flycheck-command-map)
     :init
     (global-flycheck-mode))
 #+END_SRC
