@@ -598,6 +598,7 @@ Displays available keybindings in a popup
       "Hook for `js-mode'."
       (set (make-local-variable 'company-backends)
            '((company-tern company-files))))
+     (setq tern-command (append tern-command '("--no-port-file")))
     (add-hook 'js2-mode-hook 'my-js-mode-hook)
     (add-hook 'js2-mode-hook 'company-mode)
     (add-hook 'js2-mode-hook 'tern-mode))
