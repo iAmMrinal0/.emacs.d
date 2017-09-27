@@ -3,7 +3,41 @@
 (setq user-full-name "Mrinal Purohit"
       user-mail-address "iammrinal0@gmail.com")
 #+END_SRC
+** Mac specific
+*** Beginning of line and end of line
+#+BEGIN_SRC emacs-lisp :results output silent
+  (global-set-key [home] 'move-beginning-of-line)
+  (global-set-key [end] 'move-end-of-line)
+#+END_SRC
+*** Command and alt keys
+#+BEGIN_SRC emacs-lisp :results output silent
+  (setq mac-option-key-is-meta t)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super)
+  (defun prelude-swap-meta-and-super ()
+    "Swap the mapping of Meta and Super.
+  Very useful for people using their Mac with a
+  Windows external keyboard from time to time."
+    (interactive)
+    (if (eq mac-command-modifier 'super)
+        (progn
+          (setq mac-command-modifier 'meta)
+          (setq mac-option-modifier 'super)
+          (message "Command is now bound to META and Option is bound to SUPER."))
+      (progn
+        (setq mac-command-modifier 'super)
+        (setq mac-option-modifier 'meta)
+        (message "Command is now bound to SUPER and Option is bound to META."))))
 
+  (global-set-key (kbd "C-c w") 'prelude-swap-meta-and-super)
+#+END_SRC
+** Start server
+#+BEGIN_SRC emacs-lisp :results output silent
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+#+END_SRC
 ** Package initializations
 *** Package archives
 Add =package-archives= and install =use-package=
