@@ -530,7 +530,7 @@ For better/faster PDF rendering
     :ensure t
     :diminish (smartparens-mode)
     :bind
-    ("C-S-c C-w" . sp-unwrap-sexp)
+    ("C-c s" . sp-unwrap-sexp)
     :init
     (use-package smartparens-config)
     (smartparens-global-mode)
@@ -589,6 +589,13 @@ Displays available keybindings in a popup
     ("M-4" . winum-select-window-4)
     :init
     (winum-mode))
+#+END_SRC
+*** Zop-to-char [[https://github.com/thierryvolpiatto/zop-to-char][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package zop-to-char
+    :ensure t
+    :config
+    (global-set-key [remap zap-to-char] 'zop-to-char))
 #+END_SRC
 * Programming
 ** Auto-complete
@@ -726,6 +733,8 @@ Displays available keybindings in a popup
     :ensure t
     :config
     (setq psc-ide-rebuild-on-save t)
+    :bind
+    ("C-c C-v" . psc-ide-flycheck-insert-suggestion)
     :init
     (add-hook 'purescript-mode-hook
               (lambda ()

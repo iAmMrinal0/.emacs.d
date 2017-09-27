@@ -28,9 +28,9 @@
  '(fci-rule-color "#373b41")
  '(package-selected-packages
    (quote
-    (smartscan helm-ag psc-ide purescript-mode sudoku 2048-game gruvbox-theme restclient zerodark-theme pdf-tools ace-window all-the-icons git-messenger google-this spacemacs winum org avy smart-mode-line tern-auto-complete js2-refactor keyfreq hungry-delete which-key markdown-mode helm-projectile vmd-mode xref-js2 helm-flx helm-fuzzier spacemacs-theme highlight-numbers pacmacs smartparens zpresent nodejs-repl xkcd web-mode use-package undo-tree spinner smart-mode-line-powerline-theme rainbow-mode py-autopep8 projectile org-bullets multiple-cursors magit js-comint jedi ido-vertical-mode helm git-timemachine git-gutter free-keys flycheck flx-ido expand-region emojify elpy dracula-theme company-tern anzu ag ac-js2)))
+    (zop-to-char helm-flycheck paradox exec-path-from-shell smartscan helm-ag psc-ide purescript-mode sudoku 2048-game gruvbox-theme restclient zerodark-theme pdf-tools ace-window all-the-icons git-messenger google-this spacemacs winum org avy smart-mode-line tern-auto-complete js2-refactor keyfreq hungry-delete which-key markdown-mode helm-projectile vmd-mode xref-js2 helm-flx helm-fuzzier spacemacs-theme highlight-numbers pacmacs smartparens zpresent nodejs-repl xkcd web-mode use-package undo-tree spinner smart-mode-line-powerline-theme rainbow-mode py-autopep8 projectile org-bullets multiple-cursors magit js-comint jedi ido-vertical-mode helm git-timemachine git-gutter free-keys flycheck flx-ido expand-region emojify elpy dracula-theme company-tern anzu ag ac-js2)))
  '(paradox-automatically-star nil)
- '(paradox-github-token t t)
+ '(paradox-github-token t)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
