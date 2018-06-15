@@ -340,15 +340,32 @@ For =current match= and =total match= information in the mode-line
 #+END_SRC
 *** Flycheck
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package flycheck
-    :ensure t
-    :defer t
-    :config
-    (define-key flycheck-mode-map flycheck-keymap-prefix nil)
-    (setq flycheck-keymap-prefix (kbd "C-c f"))
-    (define-key flycheck-mode-map flycheck-keymap-prefix flycheck-command-map)
-    :init
-    (global-flycheck-mode))
+    (use-package flycheck
+      :ensure t
+      :defer t
+      :config
+      (define-key flycheck-mode-map flycheck-keymap-prefix nil)
+      (setq flycheck-keymap-prefix (kbd "C-c g")
+            flycheck-idle-change-delay 3.0)
+      (define-key flycheck-mode-map flycheck-keymap-prefix flycheck-command-map)
+      :init
+      (global-flycheck-mode))
+
+  ;; (defhydra hydra-flycheck (:hint nil))
+  (defhydra hydra-flycheck
+    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
+     :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
+     :hint nil)
+    "Errors"
+    ("f"  flycheck-error-list-set-filter                            "Filter")
+    ("j"  flycheck-next-error                                       "Next")
+    ("k"  flycheck-previous-error                                   "Previous")
+    ("gg" flycheck-first-error                                      "First")
+    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+    ("a"  psc-ide-flycheck-insert-suggestion                         "Apply") ;; Remove/modify this if not using for PureScript
+    ("q"  nil))
+
+  (bind-key "C-c f" 'hydra-flycheck/body)
 #+END_SRC
 *** Flyspell
 Use flyspell for =markdown= files
@@ -464,6 +481,12 @@ Use flyspell for =markdown= files
     :config
     (global-hungry-delete-mode))
 #+END_SRC
+*** Hydra
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra
+    :ensure t
+    :defer t)
+#+END_SRC
 *** Ido
 **** Flx-ido
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -502,11 +525,59 @@ Use flyspell for =markdown= files
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package multiple-cursors
     :ensure t
-    :bind
-    ("C-S-c C-S-c" . mc/edit-lines)
-    ("C->" . mc/mark-next-like-this)
-    ("C-<" . mc/mark-previous-like-this)
-    ("C-c C-<" . mc/mark-all-like-this))
+    :commands (mc/add-cursor-on-click
+               mc/edit-beginning-of-lines
+               mc/edit-lines
+               mc/insert-numbers
+               mc/qmark-all-dwim
+               mc/mark-all-in-region-regexp
+               mc/mark-all-like-this
+               mc/mark-next-like-this
+               mc/mark-previous-like-this
+               mc/mark-sgml-tag-pair
+               mc/reverse-regions
+               mc/skip-to-next-like-this
+               mc/skip-to-previous-like-this
+               mc/sort-regions
+               mc/unmark-next-like-this
+               mc/unmark-previous-like-this)
+    )
+
+  (defhydra hydra-mc (:hint nil)
+    "
+        ^Up^            ^Down^        ^All^                ^Lines^               ^Edit^                 ^Other^
+  ----------------------------------------------------------------------------------------------------
+  [_p_]   Next    [_n_]   Next    [_a_] All like this  [_l_] Edit lines      [_i_] Insert numbers   [_t_] Tag pair
+  [_P_]   Skip    [_N_]   Skip    [_r_] All by regexp  [_L_] Edit line beg.  [_s_] Sort regions      ^ ^
+  [_M-p_] Unmark  [_M-n_] Unmark  [_d_] All DWIM        ^ ^                  [_R_] Reverse regions  [_q_] Quit
+  "
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+
+    ("a" mc/mark-all-like-this :exit t)
+    ("r" mc/mark-all-in-region-regexp :exit t)
+    ("d" mc/mark-all-dwim :exit t)
+
+    ("l" mc/edit-lines :exit t)
+    ("L" mc/edit-beginnings-of-lines :exit t)
+
+    ("i" mc/insert-numbers)
+    ("s" mc/sort-regions)
+    ("R" mc/reverse-regions)
+
+    ("t" mc/mark-sgml-tag-pair)
+    ("q" nil)
+
+    ("<mouse-1>" mc/add-cursor-on-click)
+    ("<down-mouse-1>" ignore)
+    ("<drag-mouse-1>" ignore))
+
+  (bind-key "C-c m" 'hydra-mc/body)
 #+END_SRC
 *** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
