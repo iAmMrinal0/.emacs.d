@@ -127,7 +127,7 @@ Add =package-archives= and install =use-package=
 *** Display date/time in modeline
 #+BEGIN_SRC emacs-lisp :results output silent
   (setq display-time-day-and-date t)
-  (setq display-time-format "%H:%M %e %B %Y")
+  (setq display-time-format "%H:%M %a %e %B %Y")
   (setq display-time-default-load-average nil)
   (display-time)
 #+END_SRC
