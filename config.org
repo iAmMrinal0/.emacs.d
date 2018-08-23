@@ -256,6 +256,7 @@ Revert buffers based on VC info
   (use-package projectile
     :ensure t
     :init
+    (setq projectile-keymap-prefix (kbd "C-c p"))
     (projectile-mode))
 #+END_SRC
 ** Packages
