@@ -559,6 +559,14 @@ Use flyspell for =markdown= files
     (ido-vertical-mode t)
     (setq ido-vertical-define-keys 'C-n-C-p))
 #+END_SRC
+*** Keychain
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package keychain-environment
+    :ensure t
+    :defer t
+    :init
+    (keychain-refresh-environment))
+#+END_SRC
 *** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package keyfreq
@@ -870,6 +878,16 @@ Displays available keybindings in a popup
           web-mode-enable-auto-pairing nil
           web-mode-enable-auto-closing t
           web-mode-enable-auto-quoting t))
+#+END_SRC
+* Miscellaneous
+** Twitter
+*** twittering-mode
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package twittering-mode
+    :ensure t
+    :defer t
+    :config
+    (setq twittering-use-master-password t))
 #+END_SRC
 * Documentation
 *** Markdown
