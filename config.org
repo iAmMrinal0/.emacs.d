@@ -282,6 +282,7 @@ Revert buffers based on VC info
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package projectile
     :ensure t
+    :defer 5
     :init
     (setq projectile-keymap-prefix (kbd "C-c p"))
     (projectile-mode))
@@ -313,6 +314,7 @@ For =current match= and =total match= information in the mode-line
   (use-package anzu
     :ensure t
     :diminish (anzu-mode)
+    :defer 5
     :config
     (global-set-key [remap query-replace] 'anzu-query-replace)
     (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
@@ -347,12 +349,12 @@ For =current match= and =total match= information in the mode-line
 *** Buffer Uniquify
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package uniquify
+    :defer 2
     :config
     (setq uniquify-buffer-name-style 'forward
           uniquify-separator "/"
           uniquify-after-kill-buffer-p t
           uniquify-ignore-buffers-re "^\\*"))
-
 #+END_SRC
 *** Diminish
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -421,7 +423,7 @@ Use flyspell for =markdown= files
           git-messenger:use-magit-popup t))
 #+END_SRC
 **** Git Timemachine [[https://github.com/pidu/git-timemachine][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-timemachine
     :ensure t
     :bind
@@ -463,6 +465,7 @@ Use flyspell for =markdown= files
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package helm
     :ensure t
+    :defer 5
     :diminish (helm-mode)
     :bind
     ("M-g M-m" . helm-global-mark-ring)
@@ -484,6 +487,7 @@ Use flyspell for =markdown= files
     ;;       helm-quick-update                     t
     ;;       helm-recentf-fuzzy-match              t
     ;;       helm-semantic-fuzzy-match             t)
+    :init
     (require 'helm-config)
     (helm-mode 1))
 #+END_SRC
@@ -506,6 +510,7 @@ Use flyspell for =markdown= files
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package helm-projectile
     :ensure t
+    :defer 5
     :config
     (helm-projectile-on))
 #+END_SRC
@@ -530,7 +535,7 @@ Use flyspell for =markdown= files
 #+END_SRC
 *** Ido
 **** Flx-ido
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package flx-ido
     :ensure t
     :init (flx-ido-mode t)
@@ -539,7 +544,7 @@ Use flyspell for =markdown= files
           ido-use-faces nil))
 #+END_SRC
 **** Ido mode
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package ido
     :ensure t
     :init
@@ -547,7 +552,7 @@ Use flyspell for =markdown= files
     (setq ido-everywhere t))
 #+END_SRC
 **** Ido-vertical mode
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package ido-vertical-mode
     :ensure t
     :init
@@ -621,7 +626,7 @@ Use flyspell for =markdown= files
   (bind-key "C-c m" 'hydra-mc/body)
 #+END_SRC
 *** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package paradox
     :ensure t
     :defer t
@@ -630,7 +635,7 @@ Use flyspell for =markdown= files
 #+END_SRC
 *** PDF Tools
 For better/faster PDF rendering
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package pdf-tools
     :ensure t
     :init
@@ -641,6 +646,7 @@ For better/faster PDF rendering
   (use-package smartparens
     :ensure t
     :diminish (smartparens-mode)
+    :defer 5
     :bind
     ("C-c s" . sp-unwrap-sexp)
     :init
@@ -683,6 +689,7 @@ Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent
 (use-package which-key
     :ensure t
+    :defer t
     :diminish (which-key-mode)
     :init
     (which-key-setup-side-window-bottom)
@@ -720,7 +727,7 @@ Displays available keybindings in a popup
     (ac-config-default))
 #+END_SRC
 ** Clean Mode
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package clean-mode
     :load-path "clean-mode/"
     :init
@@ -737,6 +744,7 @@ Displays available keybindings in a popup
 
   (use-package js2-mode
     :ensure t
+    :defer 5
     :mode ("\\.js\\'" . js2-mode)
     :init
     (setq js2-include-node-externs t)
@@ -769,11 +777,13 @@ Displays available keybindings in a popup
 
   (use-package tern-auto-complete
     :ensure t
+    :defer 5
     :init
     (tern-ac-setup))
 
   (use-package xref-js2
     :ensure t
+    :defer 5
     :init
     (add-hook 'js2-mode-hook (lambda ()
                                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
@@ -807,7 +817,7 @@ Displays available keybindings in a popup
                 (turn-on-purescript-indentation))))
 #+END_SRC
 ** Python
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package elpy
     :ensure t
     :defer t
@@ -891,7 +901,6 @@ Displays available keybindings in a popup
           org-fontify-whole-heading-line t
           org-fontify-done-headline t
           org-fontify-quote-and-verse-blocks t
-          org-agenda-files (quote ("~/geekskool/js/clean.org"))
           org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)")
                               (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")
                               (sequence "|" "CANCELED(c)"))))
@@ -912,7 +921,7 @@ Displays available keybindings in a popup
 ** Highlight modes
 *** Git Gutter
 For the fringe on the left with live changes
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-gutter
     :ensure t
     :diminish (git-gutter-mode)
