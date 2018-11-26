@@ -196,10 +196,8 @@ Pressing =C-u C-SPC= to pop mark every time is cumbersome, this setting helps to
 #+END_SRC
 *** Font
 #+BEGIN_SRC emacs-lisp :results output silent
-  (setq default-frame-alist
-        (append '((font . "-ADBO-Source Code Pro-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1"))
-                default-frame-alist))
-  
+  (add-to-list 'default-frame-alist
+               '(font . "-*-Iosevka-normal-normal-normal-*-18-*-*-*-m-0-iso10646-1"))
   ;; old code
   ;; (set-face-attribute 'default nil
   ;;                     :family "Source Code Pro"
