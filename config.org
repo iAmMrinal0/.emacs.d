@@ -323,6 +323,8 @@ For =current match= and =total match= information in the mode-line
     :ensure t
     :bind
     ("C-:" . avy-goto-char)
+    ("M-g g" . avy-goto-line)
+    ("M-g M-g". avy-goto-line)
     :config
     (setq avy-background t
           avy-keys (number-sequence ?a ?z)
