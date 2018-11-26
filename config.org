@@ -8,6 +8,8 @@
 #+BEGIN_SRC emacs-lisp :results output silent
   (global-set-key [home] 'move-beginning-of-line)
   (global-set-key [end] 'move-end-of-line)
+  (global-set-key (kbd "C-c b") 'beginning-of-buffer)
+  (global-set-key (kbd "C-c e") 'end-of-buffer)
 #+END_SRC
 *** Command and alt keys
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -28,6 +30,7 @@
       (progn
         (setq mac-command-modifier 'super)
         (setq mac-option-modifier 'meta)
+        (setq mac-option-key-is-meta t)
         (message "Command is now bound to SUPER and Option is bound to META."))))
 
   (global-set-key (kbd "C-c w") 'prelude-swap-meta-and-super)
