@@ -222,6 +222,26 @@ Pressing =C-u C-SPC= to pop mark every time is cumbersome, this setting helps to
       initial-scratch-message ""
       inhibit-startup-echo-area-message t)
 #+END_SRC
+*** Split window Vertically
+#+BEGIN_SRC emacs-lisp :results output silent
+  (setq split-height-threshold nil)
+  (setq split-width-threshold 160)
+#+END_SRC
+*** Disable list all buffer key-binding
+#+BEGIN_SRC emacs-lisp :results output silent
+  (global-unset-key (kbd "C-x C-b"))
+#+END_SRC
+*** Delete Trailing whitespace on save
+#+BEGIN_SRC emacs-lisp :results output silent
+  (add-hook 'before-save-hook '(lambda()
+                                 (when (not (or (derived-mode-p 'markdown-mode)
+                                                (derived-mode-p 'org-mode))
+                                            (delete-trailing-whitespace)))))
+#+END_SRC
+*** Faster scroll movement
+#+BEGIN_SRC emacs-lisp :results output silent
+  (setq auto-window-vscroll nil)
+#+END_SRC
 ** Files
 *** Auto Revert Mode
 Revert buffers automatically when files are changed externally
