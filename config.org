@@ -40,27 +40,31 @@
 #+END_SRC
 ** Package initializations
 *** Package archives
-Add =package-archives= and install =use-package=
+Add =package-archives= and install =use-package=, =exec-path-from-shell=
 #+BEGIN_SRC emacs-lisp :results output silent
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
   (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-  (add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
 
+  (unless (package-installed-p 'exec-path-from-shell)
+      (package-refresh-contents)
+      (package-install 'exec-path-from-shell))
+
   (eval-when-compile
     (require 'use-package))
 #+END_SRC
 *** Exec path from shell
 #+BEGIN_SRC emacs-lisp :results output silent
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
+  ;; (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)
+    ;; )
 #+END_SRC
 *** Load secrets
 #+BEGIN_SRC emacs-lisp :results silent
