@@ -375,8 +375,7 @@ For =current match= and =total match= information in the mode-line
       :defer t
       :config
       (define-key flycheck-mode-map flycheck-keymap-prefix nil)
-      (setq flycheck-keymap-prefix (kbd "C-c g")
-            flycheck-idle-change-delay 3.0)
+      (setq flycheck-idle-change-delay 3.0)
       (define-key flycheck-mode-map flycheck-keymap-prefix flycheck-command-map)
       :init
       (global-flycheck-mode))
@@ -432,11 +431,22 @@ Use flyspell for =markdown= files
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package magit
     :ensure t
+    :defer 5
     :bind
-    ("C-x g" . magit-status)
+    (("C-x g" . magit-status)
+     ("C-c g b" . magit-blame)
+     )
     :config
-    (setq magit-commit-arguments (quote ("--gpg-sign=E27C4BC509095144"))
-          magit-diff-use-overlays nil))
+    (setq magit-commit-arguments nil ;;(quote ("--gpg-sign=E27C4BC509095144"))
+          magit-diff-use-overlays nil
+          magit-diff-refine-hunk t
+          ;; magit-blame-styles '((side-view
+          ;;                     (margin-format    . (" %s%f" " %C %a" " %H"))
+          ;;                     (margin-width     . 42)
+          ;;                     (margin-face      . magit-blame-margin)
+          ;;                     (margin-body-face . (magit-blame-dimmed))))
+          )
+    )
 #+END_SRC
 
 *** Google-this [[https://github.com/Malabarba/emacs-google-this][GitHub]]
@@ -459,7 +469,8 @@ Use flyspell for =markdown= files
     ("M-x" . helm-M-x)
     ("C-x b" . helm-mini)
     ("M-y" . helm-show-kill-ring)
-    :init
+    ("C-x C-f" . helm-find-files)
+    :config
     (setq helm-M-x-fuzzy-match                  t
           helm-buffers-fuzzy-matching           t
           helm-recentf-fuzzy-match              t)
@@ -742,29 +753,6 @@ Displays available keybindings in a popup
     (js2r-add-keybindings-with-prefix "C-c C-m")
     (add-hook 'js2-mode-hook 'js2-refactor-mode))
 
-  (use-package js-comint
-    :ensure t
-    :init
-    (setq inferior-js-program-command "node")
-    (setq inferior-js-program-arguments '("--interactive"))
-    (add-hook 'js2-mode-hook
-              (lambda ()
-                (local-set-key (kbd "C-x C-e") 'js-send-last-sexp)
-                (local-set-key (kbd "C-M-x") 'js-send-last-sexp-and-go)
-                (local-set-key (kbd "C-c b") 'js-send-buffer)
-                (local-set-key (kbd "C-c C-b") 'js-send-buffer-and-go)
-                (local-set-key (kbd "C-c l") 'js-load-file-and-go))))
-
-  (use-package nodejs-repl
-    :ensure t
-    :init
-    (add-hook 'js-mode-hook
-              (lambda ()
-                (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-sexp)
-                (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
-                (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
-                (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl))))
-
   (use-package tern
     :ensure t
     :diminish (tern-mode)
@@ -791,49 +779,24 @@ Displays available keybindings in a popup
                                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
 
 #+END_SRC
-*** JavaScript Run Tests
-#+BEGIN_SRC emacs-lisp :results output silent
-  (defvar testing-command "echo No testing command configured!")
-
-  (defun execute-tests ()
-    "Query whether save buffer and then run specific language test."
-    (interactive)
-    (when (and (buffer-modified-p)
-               (y-or-n-p (format "Save file %s? " (buffer-file-name))))
-      (save-buffer))
-    (with-output-to-temp-buffer "*automated tests*"
-      (shell-command (concat "echo Running: " testing-command) "*automated tests*")
-      (shell-command testing-command
-                     "*automated tests*")
-      (pop-to-buffer "*automated tests*")))
-
-  (global-set-key (kbd "C-c C-S-t") 'execute-tests)
-
-  (defun test-javascript ()
-    "Test command for JavaScript."
-    (concat "npm test"))
-
-  (add-hook 'js2-mode-hook
-            (lambda ()
-              (set (make-local-variable 'testing-command)
-                   (test-javascript))))
-
-#+END_SRC
-
 ** PureScript
 *** PureScript mode
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package purescript-mode
     :ensure t
     :commands purescript-mode
-    :mode (("\\.purs$" . purescript-mode)))
+    :mode (("\\.purs$" . purescript-mode))
+    :init
+    (add-hook 'purescript-mode-hook 'turn-on-purescript-decl-scan))
 #+END_SRC
 *** Psc-ide
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package psc-ide
     :ensure t
+    :diminish (purescript-indentation-mode psc-ide-mode company-mode)
     :config
-    (setq psc-ide-rebuild-on-save t)
+    (setq psc-ide-rebuild-on-save t
+          psc-ide-use-npm-bin t)
     :bind
     ("C-c C-v" . psc-ide-flycheck-insert-suggestion)
     :init
@@ -873,7 +836,9 @@ Displays available keybindings in a popup
     :ensure t
     :defer t
     :diminish (yas-minor-mode)
-    :init
+    :config
+    (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+    (setq yas-indent-line 'fixed)
     (yas-global-mode 1))
 
 #+END_SRC
@@ -956,9 +921,9 @@ For the fringe on the left with live changes
     :config
     (setq git-gutter:added-sign "++"
           git-gutter:deleted-sign "--"
-          git-gutter:modified-sign "  "
+          git-gutter:modified-sign "~~"
           git-gutter:update-interval 1)
-    (set-face-background 'git-gutter:modified "#a36fff")
+    (set-face-foreground 'git-gutter:modified "#a36fff")
     (set-face-foreground 'git-gutter:added "#198844")
     (set-face-foreground 'git-gutter:deleted "#cc342b")
     (add-to-list 'git-gutter:update-hooks 'focus-in-hook)
@@ -1049,27 +1014,30 @@ For the fringe on the left with live changes
       (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
         (-zip-pair ligatures codepoints)))
 
-    (setq my-fira-code-ligatures
-          (let* ((ligs '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\"
-                         "{-" "[@#@#$@#@#!@]" "::" ":::" ":=" "!!" "!=" "!==" "-}"
-                         "--" "---" "-->" "->" "->>" "-<" "-<<" "-~"
-                         "#{" "#[" "##" "###" "####" "#(" "#?" "#_" "#_("
-                         ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*"
-                         "/**" "/=" "/==" "/>" "//" "///" "&&" "||" "||="
-                         "|=" "|>" "^=" "$>" "++" "+++" "+>" "=:=" "=="
-                         "===" "==>" "=>" "=>>" "<=" "=<<" "=/=" ">-" ">="
-                         ">=>" ">>" ">>-" ">>=" ">>>" "<*" "<*>" "<|" "<|>"
-                         "<$" "<$>" "<!--" "<-" "<--" "<->" "<+" "<+>" "<="
-                         "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<" "<~"
-                         "<~~" "</" "</>" "~@" "~-" "~=" "~>" "~~" "~~>" "%%"
-                         "x" ":" "+" "+" "*")))
+  ;; list can be found at https://github.com/i-tu/Hasklig
+  (setq my-hasklig-ligatures
+        (let* ((ligs '("&&" "***" "*>" "\\\\" "||" "|>" "::"
+                       "==" "===" "==>" "=>" "=<<" "!!" ">>"
+                       ">>=" ">>>" ">>-" ">-" "->" "-<" "-<<"
+                       "<*" "<*>" "<|" "<|>" "<$>" "<>" "<-"
+                       "<<" "<<<" "<+>" ".." "..." "++" "+++"
+                       "/=" ":::" ">=>" "->>" "<=>" "<=<" "<->")))
             (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
+
    ;; nice glyphs for programs with hasklig
     (defun my-set-ligatures ()
       "Add hasklig ligatures for use with prettify-symbols-mode."
       (setq prettify-symbols-alist
-            (append prettify-symbols-alist my-fira-code-ligatures))
+            (append my-hasklig-ligatures prettify-symbols-alist))
       (prettify-symbols-mode))
 
     (add-hook 'purescript-mode-hook 'my-set-ligatures)
+#+END_SRC
+** Rainbow delimiters
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package rainbow-delimiters
+    :ensure t
+    :defer 5
+    :config
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
