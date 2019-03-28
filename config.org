@@ -62,6 +62,8 @@ Add =package-archives= and install =use-package=, =exec-path-from-shell=
 
   (eval-when-compile
     (require 'use-package))
+
+  (setq-default use-package-always-ensure t)
 #+END_SRC
 *** Exec path from shell
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -279,7 +281,6 @@ Revert buffers based on VC info
 *** Projectile
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package projectile
-    :ensure t
     :defer 5
     :init
     (setq projectile-keymap-prefix (kbd "C-c p"))
@@ -289,7 +290,6 @@ Revert buffers based on VC info
 *** Ace-window [[https://github.com/abo-abo/ace-window][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package ace-window
-    :ensure t
     :bind
     ("M-o" . ace-window)
     :config
@@ -297,20 +297,17 @@ Revert buffers based on VC info
 #+END_SRC
 *** Ag
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package ag
-    :ensure t)
+  (use-package ag)
 #+END_SRC
 
 *** All the icons
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package all-the-icons
-    :ensure t)
+  (use-package all-the-icons)
 #+END_SRC
 *** Anzu [[https://github.com/winterTTr/ace-jump-mode][GitHub]]
 For =current match= and =total match= information in the mode-line
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package anzu
-    :ensure t
     :diminish (anzu-mode)
     :defer 5
     :config
@@ -323,7 +320,6 @@ For =current match= and =total match= information in the mode-line
 *** Avy [[https://github.com/abo-abo/avy][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package avy
-    :ensure t
     :bind
     ("C-:" . avy-goto-char)
     ("M-g g" . avy-goto-line)
@@ -347,6 +343,7 @@ For =current match= and =total match= information in the mode-line
 *** Buffer Uniquify
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package uniquify
+    :ensure nil
     :defer 2
     :config
     (setq uniquify-buffer-name-style 'forward
@@ -357,13 +354,11 @@ For =current match= and =total match= information in the mode-line
 *** Diminish
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package diminish
-    :ensure t
     :diminish (auto-revert-mode visual-line-mode))
 #+END_SRC
 *** Expand Region [[https://github.com/magnars/expand-region.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package expand-region
-    :ensure t
     :defer t
     :bind
     ("C-=" . er/expand-region))
@@ -371,7 +366,6 @@ For =current match= and =total match= information in the mode-line
 *** Flycheck
 #+BEGIN_SRC emacs-lisp :results output silent
     (use-package flycheck
-      :ensure t
       :defer t
       :config
       (define-key flycheck-mode-map flycheck-keymap-prefix nil)
@@ -400,20 +394,17 @@ For =current match= and =total match= information in the mode-line
 Use flyspell for =markdown= files
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package flyspell
-    :ensure t
     :defer t
     :mode ("'\\.md\\'" . flyspell-mode))
 #+END_SRC
 *** Free keys [[https://github.com/Fuco1/free-keys][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
-(use-package free-keys
-    :ensure t)
+(use-package free-keys)
 #+END_SRC
 *** Git
 **** Git Messenger [[https://github.com/syohex/emacs-git-messenger][GitHub]] (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-messenger
-    :ensure t
     :bind
     ("C-c v p" . git-messenger:popup-message)
     :config
@@ -423,14 +414,12 @@ Use flyspell for =markdown= files
 **** Git Timemachine [[https://github.com/pidu/git-timemachine][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-timemachine
-    :ensure t
     :bind
     ("C-c C-x t" . git-timemachine))
 #+END_SRC
 **** Magit [[https://github.com/magit/magit][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package magit
-    :ensure t
     :defer 5
     :bind
     (("C-x g" . magit-status)
@@ -452,7 +441,6 @@ Use flyspell for =markdown= files
 *** Google-this [[https://github.com/Malabarba/emacs-google-this][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package google-this
-    :ensure t
     :diminish (google-this-mode)
     :bind
     ("C-c /" . google-this-mode-submap)
@@ -462,7 +450,6 @@ Use flyspell for =markdown= files
 *** Helm [[https://github.com/emacs-helm/helm][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package helm
-    :ensure t
     :defer 5
     :diminish (helm-mode)
     :bind
@@ -492,14 +479,12 @@ Use flyspell for =markdown= files
 **** Helm Flx [[https://github.com/PythonNut/helm-flx][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   ;; (use-package helm-flx
-  ;;   :ensure t
   ;;   :init
   ;;   (helm-flx-mode +1))
 #+END_SRC
 **** Helm Fuzzier [[https://github.com/EphramPerdition/helm-fuzzier][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   ;; (use-package helm-fuzzier
-  ;;   :ensure t
   ;;   :init
   ;;   (helm-fuzzier-mode 1))
 
@@ -507,20 +492,17 @@ Use flyspell for =markdown= files
 **** Helm Projectile [[https://github.com/bbatsov/helm-projectile][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package helm-projectile
-    :ensure t
     :defer 5
     :config
     (helm-projectile-on))
 #+END_SRC
 *** Helm Ag
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package helm-ag
-    :ensure t)
+  (use-package helm-ag)
 #+END_SRC
 *** Hungry Delete [[https://github.com/nflath/hungry-delete][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
 (use-package hungry-delete
-    :ensure t
     :diminish (hungry-delete-mode)
     :config
     (global-hungry-delete-mode))
@@ -528,14 +510,12 @@ Use flyspell for =markdown= files
 *** Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra
-    :ensure t
     :defer t)
 #+END_SRC
 *** Ido
 **** Flx-ido
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package flx-ido
-    :ensure t
     :init (flx-ido-mode t)
     :config
     (setq ido-enable-flex-matching t
@@ -544,7 +524,6 @@ Use flyspell for =markdown= files
 **** Ido mode
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package ido
-    :ensure t
     :init
     (ido-mode t)
     (setq ido-everywhere t))
@@ -552,7 +531,6 @@ Use flyspell for =markdown= files
 **** Ido-vertical mode
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package ido-vertical-mode
-    :ensure t
     :init
     (ido-vertical-mode t)
     (setq ido-vertical-define-keys 'C-n-C-p))
@@ -560,7 +538,6 @@ Use flyspell for =markdown= files
 *** Keychain
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package keychain-environment
-    :ensure t
     :defer t
     :init
     (keychain-refresh-environment))
@@ -568,7 +545,6 @@ Use flyspell for =markdown= files
 *** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package keyfreq
-    :ensure t
     :config
     (keyfreq-mode t)
     (keyfreq-autosave-mode t))
@@ -576,7 +552,6 @@ Use flyspell for =markdown= files
 *** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package multiple-cursors
-    :ensure t
     :commands (mc/add-cursor-on-click
                mc/edit-beginning-of-lines
                mc/edit-lines
@@ -634,7 +609,6 @@ Use flyspell for =markdown= files
 *** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package paradox
-    :ensure t
     :defer t
     :config
     (setq paradox-execute-asynchronously t))
@@ -643,20 +617,19 @@ Use flyspell for =markdown= files
 For better/faster PDF rendering
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package pdf-tools
-    :ensure t
     :init
     (pdf-tools-install))
 #+END_SRC
 *** Smartparens [[https://github.com/Fuco1/smartparens][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package smartparens
-    :ensure t
     :diminish (smartparens-mode)
     :defer 5
     :bind
     ("C-c s" . sp-unwrap-sexp)
     :init
-    (use-package smartparens-config)
+    (use-package smartparens-config
+      :ensure nil)
     (smartparens-global-mode)
     (show-smartparens-global-mode))
 #+END_SRC
@@ -664,7 +637,6 @@ For better/faster PDF rendering
     For undo visualizations
     #+BEGIN_SRC emacs-lisp :results output silent
       (use-package undo-tree
-        :ensure t
         :diminish undo-tree-mode
         :bind
         ("C-z" . undo)
@@ -686,7 +658,6 @@ For better/faster PDF rendering
 *** Smartscan [[https://github.com/mickeynp/smart-scan][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package smartscan
-    :ensure t
     :init
     (global-smartscan-mode))
 #+END_SRC
@@ -694,7 +665,6 @@ For better/faster PDF rendering
 Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent
 (use-package which-key
-    :ensure t
     :defer t
     :diminish (which-key-mode)
     :init
@@ -704,7 +674,6 @@ Displays available keybindings in a popup
 *** Winum Mode [[https://github.com/deb0ch/emacs-winum][GitHub]] (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package winum
-    :ensure t
     :config
     (winum-set-keymap-prefix (kbd "C-c"))
     :bind
@@ -718,7 +687,6 @@ Displays available keybindings in a popup
 *** Zop-to-char [[https://github.com/thierryvolpiatto/zop-to-char][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package zop-to-char
-    :ensure t
     :config
     (global-set-key [remap zap-to-char] 'zop-to-char))
 #+END_SRC
@@ -726,7 +694,6 @@ Displays available keybindings in a popup
 ** Auto-complete
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package auto-complete
-    :ensure t
     :defer t
     :init
     (global-auto-complete-mode t)
@@ -744,12 +711,10 @@ Displays available keybindings in a popup
   ;; company backend for tern
   ;; http://ternjs.net/doc/manual.html#emacs
   (use-package company-tern
-    :ensure t
     :defer t
     :diminish (company-mode))
 
   (use-package js2-mode
-    :ensure t
     :defer 5
     :mode ("\\.js\\'" . js2-mode)
     :init
@@ -760,7 +725,6 @@ Displays available keybindings in a popup
     (setq js-switch-indent-offset 2))
 
   (use-package js2-refactor
-    :ensure t
     :diminish (js2-refactor-mode)
     :defer t
     :config
@@ -768,7 +732,6 @@ Displays available keybindings in a popup
     (add-hook 'js2-mode-hook 'js2-refactor-mode))
 
   (use-package tern
-    :ensure t
     :diminish (tern-mode)
     :defer t
     :config
@@ -782,13 +745,11 @@ Displays available keybindings in a popup
     (add-hook 'js2-mode-hook 'tern-mode))
 
   (use-package tern-auto-complete
-    :ensure t
     :defer 5
     :init
     (tern-ac-setup))
 
   (use-package xref-js2
-    :ensure t
     :defer 5
     :init
     (add-hook 'js2-mode-hook (lambda ()
@@ -799,7 +760,6 @@ Displays available keybindings in a popup
 *** PureScript mode
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package purescript-mode
-    :ensure t
     :commands purescript-mode
     :mode (("\\.purs$" . purescript-mode))
     :init
@@ -808,11 +768,11 @@ Displays available keybindings in a popup
 *** Psc-ide
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package psc-ide
-    :ensure t
     :diminish (purescript-indentation-mode psc-ide-mode company-mode)
     :config
-    (setq psc-ide-rebuild-on-save t
-          psc-ide-use-npm-bin t)
+    (setq psc-ide-rebuild-on-save nil
+          psc-ide-use-npm-bin t
+          psc-ide-editor-mode t)
     :bind
     ("C-c C-v" . psc-ide-flycheck-insert-suggestion)
     :init
@@ -825,14 +785,12 @@ Displays available keybindings in a popup
 ** Python
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package elpy
-    :ensure t
     :defer t
     :config
     (setq python-indent-offset 4)
     (elpy-enable))
 
   (use-package jedi
-    :ensure t
     :defer t
     :init
     (add-hook 'python-mode-hook 'jedi:setup)
@@ -840,7 +798,6 @@ Displays available keybindings in a popup
           jedi:use-shortcuts t))
 
   (use-package py-autopep8
-    :ensure t
     :defer t
     :init
     (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
@@ -849,7 +806,6 @@ Displays available keybindings in a popup
 ** Snippets
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package yasnippet
-    :ensure t
     :defer t
     :diminish (yas-minor-mode)
     :config
@@ -861,7 +817,6 @@ Displays available keybindings in a popup
 ** Web mode
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package web-mode
-    :ensure t
     :defer t
     :mode
     ("\\.html?\\'" . web-mode)
@@ -882,7 +837,6 @@ Displays available keybindings in a popup
 *** twittering-mode
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package twittering-mode
-    :ensure t
     :defer t
     :config
     (setq twittering-use-master-password t))
@@ -891,7 +845,6 @@ Displays available keybindings in a popup
 *** Markdown
 #+BEGIN_SRC emacs-lisp :results output silent
     (use-package markdown-mode
-      :ensure t
       :defer t
       :commands (markdown-mode gfm-mode)
       :mode ("\\.md\\'" . gfm-mode)
@@ -902,7 +855,6 @@ Displays available keybindings in a popup
 **** Org
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package org
-    :ensure t
     :defer t
     :bind
     ("C-c l" . org-store-link)
@@ -926,7 +878,6 @@ Displays available keybindings in a popup
 **** Org bullets
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package org-bullets
-    :ensure t
     :after org
     :init
     ;; (setq org-bullets-bullet-list '("●"))
@@ -939,7 +890,6 @@ Displays available keybindings in a popup
 For the fringe on the left with live changes
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package git-gutter
-    :ensure t
     :diminish (git-gutter-mode)
     :defer t
     :init (global-git-gutter-mode t)
@@ -958,7 +908,6 @@ For the fringe on the left with live changes
 *** Rainbow mode for Programming modes
 #+BEGIN_SRC emacs-lisp :results output silent
     (use-package rainbow-mode
-      :ensure t
       :diminish rainbow-mode
       :init
       (add-hook 'prog-mode-hook 'rainbow-mode))
@@ -967,8 +916,7 @@ For the fringe on the left with live changes
 *** Doom theme and custom theme modifications (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
   ;; (use-package doom-themes
-  ;;   :ensure t
-  ;;   :init
+  ;;   ;;   :init
   ;;   (load-theme 'doom-one t)
   ;;   (setq doom-enable-bold t    ; if nil, bolding are universally disabled
   ;;         doom-enable-italic t  ; if nil, italics are universally disabled
@@ -990,7 +938,6 @@ For the fringe on the left with live changes
 *** Gruvbox theme
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package gruvbox-theme
-    :ensure t
     :config
     (load-theme 'gruvbox-dark-hard t))
 #+END_SRC
@@ -998,7 +945,6 @@ For the fringe on the left with live changes
 *** Smart-mode-line
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package smart-mode-line
-    :ensure t
     :init
     (setq sml/theme 'respectful
           sml/mode-width 'full
@@ -1061,7 +1007,6 @@ For the fringe on the left with live changes
 ** Rainbow delimiters
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package rainbow-delimiters
-    :ensure t
     :defer 5
     :config
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
