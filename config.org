@@ -235,10 +235,7 @@ Pressing =C-u C-SPC= to pop mark every time is cumbersome, this setting helps to
 #+END_SRC
 *** Delete Trailing whitespace on save
 #+BEGIN_SRC emacs-lisp :results output silent
-  (add-hook 'before-save-hook '(lambda()
-                                 (when (not (or (derived-mode-p 'markdown-mode)
-                                                (derived-mode-p 'org-mode))
-                                            (delete-trailing-whitespace)))))
+  (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
 *** Faster scroll movement
 #+BEGIN_SRC emacs-lisp :results output silent
