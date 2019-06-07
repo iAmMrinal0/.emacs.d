@@ -71,7 +71,7 @@ Add =package-archives= and install =use-package=, =exec-path-from-shell=
     ;; )
 #+END_SRC
 *** Load secrets
-#+BEGIN_SRC emacs-lisp :results silent
+#+BEGIN_SRC emacs-lisp :results silent :tangle no
   (load "~/.emacs.d/secrets")
 #+END_SRC
 ** Snippets
