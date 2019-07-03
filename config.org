@@ -1024,7 +1024,15 @@ For the fringe on the left with live changes
             (append my-hasklig-ligatures prettify-symbols-alist))
       (prettify-symbols-mode))
 
-    (add-hook 'purescript-mode-hook 'my-set-ligatures)
+  (defun my-add-to-multiple-hooks (function hooks)
+    (mapc (lambda (hook)
+            (add-hook hook function))
+          hooks))
+
+  (my-add-to-multiple-hooks
+   'my-set-ligatures
+   '(purescript-mode-hook
+     haskell-mode-hook))
 #+END_SRC
 ** Rainbow delimiters
 #+BEGIN_SRC emacs-lisp :results output silent
