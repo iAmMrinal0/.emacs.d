@@ -705,6 +705,29 @@ Displays available keybindings in a popup
     :init
     (add-to-list 'auto-mode-alist '("\\.cl\\'" . clean-mode)))
 #+END_SRC
+** Haskell
+*** Haskell mode
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package haskell-mode)
+#+END_SRC
+*** Dante
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package dante
+    :after haskell-mode
+    :commands 'dante-mode
+    :init
+    (add-hook 'haskell-mode-hook 'flycheck-mode)
+    (add-hook 'haskell-mode-hook 'dante-mode)
+    (add-hook 'dante-mode-hook
+     '(lambda () (flycheck-add-next-checker 'haskell-dante
+                  '(warning . haskell-hlint)))))
+#+END_SRC
+*** Hindent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package hindent
+    :config
+    (add-hook 'haskell-mode-hook 'hindent-mode))
+#+END_SRC
 ** JavaScript
 #+BEGIN_SRC emacs-lisp :results output silent
   ;; company backend for tern
