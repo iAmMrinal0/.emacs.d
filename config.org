@@ -778,6 +778,10 @@ Displays available keybindings in a popup
                                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
 
 #+END_SRC
+** Nix
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package nix-mode)
+#+END_SRC
 ** PureScript
 *** PureScript mode
 #+BEGIN_SRC emacs-lisp :results output silent
