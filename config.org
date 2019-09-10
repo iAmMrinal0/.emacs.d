@@ -894,6 +894,7 @@ Displays available keybindings in a popup
     :config
     (setq org-log-done t
           org-support-shift-select t
+          org-catch-invisible-edits 'show-and-error
           ;; stop emacs asking for confirmation
           org-confirm-babel-evaluate nil
           org-src-fontify-natively t
