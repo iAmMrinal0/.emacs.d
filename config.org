@@ -920,7 +920,7 @@ Displays available keybindings in a popup
 ** Highlight modes
 *** Git Gutter
 For the fringe on the left with live changes
-#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package git-gutter
     :diminish (git-gutter-mode)
     :defer t
@@ -930,9 +930,9 @@ For the fringe on the left with live changes
           git-gutter:deleted-sign "--"
           git-gutter:modified-sign "~~"
           git-gutter:update-interval 1)
-    (set-face-foreground 'git-gutter:modified "#a36fff")
-    (set-face-foreground 'git-gutter:added "#198844")
-    (set-face-foreground 'git-gutter:deleted "#cc342b")
+    ;; (set-face-foreground 'git-gutter:modified-sign "#a36fff")
+    ;; (set-face-foreground 'git-gutter:added-sign "#198844")
+    ;; (set-face-foreground 'git-gutter:deleted-sign "#cc342b")
     (add-to-list 'git-gutter:update-hooks 'focus-in-hook)
     (add-hook 'git-gutter:update-hooks 'magit-after-revert-hook)
     (add-hook 'git-gutter:update-hooks 'magit-not-reverted-hook))
