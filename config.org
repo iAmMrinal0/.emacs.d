@@ -381,7 +381,6 @@ For =current match= and =total match= information in the mode-line
       ("k"  flycheck-previous-error                                   "Previous")
       ("gg" flycheck-first-error                                      "First")
       ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-      ("a"  psc-ide-flycheck-insert-suggestion                         "Apply") ;; Remove/modify this if not using for PureScript
       ("q"  nil))
 
   (bind-key "C-c f" 'hydra-flycheck/body)
@@ -707,10 +706,14 @@ Displays available keybindings in a popup
 ** Haskell
 *** Haskell mode
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package haskell-mode)
+  (use-package haskell-mode
+    :bind
+    ([f8] . haskell-navigate-imports)
+    :config
+    (setq haskell-stylish-on-save t))
 #+END_SRC
 *** Dante
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package dante
     :after haskell-mode
     :commands 'dante-mode
@@ -733,6 +736,26 @@ Displays available keybindings in a popup
     :bind
     ("C-c y" . hasky-extensions)
     ("C-c h x" . hasky-extensions-browse-docs))
+#+END_SRC
+*** LSP
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package lsp-mode
+    :hook (haskell-mode . lsp)
+    :commands lsp
+    :config
+    (setq lsp-prefer-flymake nil))
+
+  (use-package lsp-haskell
+    :hook (haskell-mode . lsp-haskell-enable)
+    :config
+    (setq lsp-haskell-process-path-hie "ghcide"
+          lsp-haskell-process-args-hie '()))
+
+  (use-package lsp-ui
+    :commands lsp-ui-mode)
+  ;; (use-package company-lsp :commands company-lsp)
+  ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 #+END_SRC
 ** JavaScript
 #+BEGIN_SRC emacs-lisp :results output silent
