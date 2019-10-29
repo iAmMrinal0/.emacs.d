@@ -549,7 +549,7 @@ Use flyspell for =markdown= files
 #+END_SRC
 *** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package multiple-cursors
+(use-package multiple-cursors
     :commands (mc/add-cursor-on-click
                mc/edit-beginning-of-lines
                mc/edit-lines
@@ -567,7 +567,7 @@ Use flyspell for =markdown= files
                mc/unmark-next-like-this
                mc/unmark-previous-like-this))
 
-    (defhydra hydra-mc (:hint nil)
+(defhydra hydra-mc (:hint nil)
       "
           ^Up^            ^Down^        ^All^                ^Lines^               ^Edit^                 ^Other^
     ----------------------------------------------------------------------------------------------------
@@ -601,7 +601,7 @@ Use flyspell for =markdown= files
       ("<down-mouse-1>" ignore)
       ("<drag-mouse-1>" ignore))
 
-  (bind-key "C-c m" 'hydra-mc/body)
+(bind-key "C-c m" 'hydra-mc/body)
 #+END_SRC
 *** Paradox [[https://github.com/Malabarba/paradox][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
@@ -971,25 +971,25 @@ For the fringe on the left with live changes
 ** Themes
 *** Doom theme and custom theme modifications (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
-  ;; (use-package doom-themes
-  ;;   ;;   :init
-  ;;   (load-theme 'doom-one t)
-  ;;   (setq doom-enable-bold t    ; if nil, bolding are universally disabled
-  ;;         doom-enable-italic t  ; if nil, italics are universally disabled
+  (use-package doom-themes
+    :init
+    (load-theme 'doom-one t)
+    (setq doom-enable-bold t    ; if nil, bolding are universally disabled
+          doom-enable-italic t  ; if nil, italics are universally disabled
 
-  ;;         ;; doom-one specific settings
-  ;;         doom-one-brighter-modeline t
-  ;;         doom-one-brighter-comments t)
-  ;;   ;; brighter minibuffer when active
-  ;;   (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer))
+          ;; doom-one specific settings
+          doom-one-brighter-modeline t
+          doom-one-brighter-comments t)
+    ;; brighter minibuffer when active
+    (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer))
 
-  ;; (custom-theme-set-faces
-  ;;  'doom-one
-  ;;  '(font-lock-builtin-face ((t (:foreground "c678dd" :bold bold))))
-  ;;  '(font-lock-comment-face ((t (:foreground "#5699AF" :italic italic))))
-  ;;  '(font-lock-constant-face      ((t (:foreground "#a9a1e1" :bold bold :italic italic))))
-  ;;  '(font-lock-function-name-face ((t (:foreground "#c678dd" :bold bold))))
-  ;;  '(font-lock-keyword-face       ((t (:foreground "#51afef" :italic italic)))))
+  (custom-theme-set-faces
+   'doom-one
+   '(font-lock-builtin-face ((t (:foreground "c678dd" :bold bold))))
+   '(font-lock-comment-face ((t (:foreground "#5699AF" :italic italic))))
+   '(font-lock-constant-face      ((t (:foreground "#a9a1e1" :bold bold :italic italic))))
+   '(font-lock-function-name-face ((t (:foreground "#c678dd" :bold bold))))
+   '(font-lock-keyword-face       ((t (:foreground "#51afef" :italic italic)))))
 #+END_SRC
 *** Gruvbox theme
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -1016,12 +1016,12 @@ For the fringe on the left with live changes
 #+END_SRC
 *** Powerline modeline with =wave= format
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
-  ;; (use-package powerline
-  ;;   :load-path "custom/powerline"
-  ;;   :config
-  ;;   (setq powerline-default-separator 'wave
-  ;;         powerline-display-buffer-size nil)
-  ;;   (powerline-default-theme))
+  (use-package powerline
+    :load-path "custom/powerline"
+    :config
+    (setq powerline-default-separator 'wave
+          powerline-display-buffer-size nil)
+    (powerline-default-theme))
 #+END_SRC
 ** Ligatures
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -1071,7 +1071,7 @@ For the fringe on the left with live changes
 ** Rainbow delimiters
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package rainbow-delimiters
-    :defer 5
+    :defer t
     :config
     (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+END_SRC
