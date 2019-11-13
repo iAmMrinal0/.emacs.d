@@ -741,18 +741,30 @@ Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-mode
     :hook (haskell-mode . lsp)
+    :init
+    (add-hook 'haskell-mode-hook 'direnv-update-environment)
     :commands lsp
+    :bind
+    (("C-x nl" . lsp)
+     ("C-x nr" . lsp-restart-workspace))
     :config
     (setq lsp-prefer-flymake nil))
 
   (use-package lsp-haskell
-    :hook (haskell-mode . lsp-haskell-enable)
+    :hook (haskell-mode)
     :config
     (setq lsp-haskell-process-path-hie "ghcide"
           lsp-haskell-process-args-hie '()))
 
+  ;; (lsp-define-stdio-client lsp-haskell "haskell" #'lsp-haskell--get-root
+  ;;              ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log"))
+  ;;        ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log" "--vomit"))
+  ;;        (funcall lsp-haskell-process-wrapper-function (lsp--haskell-hie-command)))
+
   (use-package lsp-ui
-    :commands lsp-ui-mode)
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-flycheck-enable t))
   ;; (use-package company-lsp :commands company-lsp)
   ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
   ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -808,8 +820,16 @@ Displays available keybindings in a popup
 
 #+END_SRC
 ** Nix
+*** Nix-mode
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package nix-mode)
+  (use-package nix-mode
+    :mode ("\\.nix$" . nix-mode))
+#+END_SRC
+*** Direnv
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package direnv
+    :bind
+    ("C-x nu" . direnv-update-environment))
 #+END_SRC
 ** PureScript
 *** PureScript mode
