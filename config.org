@@ -45,6 +45,7 @@
 *** Package archives
 Add =package-archives= and install =use-package=, =exec-path-from-shell=
 #+BEGIN_SRC emacs-lisp :results output silent
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
