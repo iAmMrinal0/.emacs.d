@@ -1,5 +1,5 @@
 ** User details
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
 (setq user-full-name "Mrinal Purohit"
       user-mail-address "iammrinal0@gmail.com")
 #+END_SRC
