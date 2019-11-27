@@ -756,18 +756,33 @@ Displays available keybindings in a popup
     ("C-c h x" . hasky-extensions-browse-docs))
 #+END_SRC
 *** LSP
+**** LSP mode
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-mode
     :hook (haskell-mode . lsp)
     :init
     (add-hook 'haskell-mode-hook 'direnv-update-environment)
     :commands lsp
-    :bind
-    (("C-x nl" . lsp)
-     ("C-x nr" . lsp-restart-workspace))
+    ;; :bind
+    ;; (("C-x nl" . lsp)
+    ;;  ("C-x nr" . lsp-restart-workspace))
     :config
     (setq lsp-prefer-flymake nil))
 
+  (defhydra hydra-lsp (:hint nil)
+        "
+            ^Start^              ^Restart^             ^Other^
+      ----------------------------------------------------------------------------------------------------
+      [_s_]   Start LSP    [_r_]   Restart LSP   [_q_]   Quit
+      "
+        ("s" lsp :exit t)
+        ("r" lsp-workspace-restart :exit t)
+        ("q" nil))
+
+  (bind-key "C-c l" 'hydra-lsp/body)
+#+END_SRC
+**** LSP Haskell
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-haskell
     :hook (haskell-mode)
     :config
@@ -778,7 +793,9 @@ Displays available keybindings in a popup
   ;;              ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log"))
   ;;        ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log" "--vomit"))
   ;;        (funcall lsp-haskell-process-wrapper-function (lsp--haskell-hie-command)))
-
+#+END_SRC
+**** LSP UI
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-ui
     :commands lsp-ui-mode
     :config
