@@ -703,6 +703,23 @@ Displays available keybindings in a popup
     :init
     (add-to-list 'auto-mode-alist '("\\.cl\\'" . clean-mode)))
 #+END_SRC
+** Direnv
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package direnv
+    :config
+    (direnv-mode))
+(defhydra hydra-de (:hint nil)
+      "
+          ^Allow^          ^Update^                     ^Other^
+    ----------------------------------------------------------------------------------------------------
+    [_a_]   Allow    [_u_]   Update Environment   [_q_]   Quit
+    "
+      ("a" direnv-allow :exit t)
+      ("u" direnv-update-environment :exit t)
+      ("q" nil))
+
+(bind-key "C-c d" 'hydra-de/body)
+#+END_SRC
 ** Haskell
 *** Haskell mode
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -824,12 +841,6 @@ Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package nix-mode
     :mode ("\\.nix$" . nix-mode))
-#+END_SRC
-*** Direnv
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package direnv
-    :bind
-    ("C-x nu" . direnv-update-environment))
 #+END_SRC
 ** PureScript
 *** PureScript mode
