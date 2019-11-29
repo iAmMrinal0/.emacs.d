@@ -771,12 +771,14 @@ Displays available keybindings in a popup
 
   (defhydra hydra-lsp (:hint nil)
         "
-            ^Start^              ^Restart^             ^Other^
+            ^Start^              ^Action^                    ^Other^
       ----------------------------------------------------------------------------------------------------
-      [_s_]   Start LSP    [_r_]   Restart LSP   [_q_]   Quit
+      [_s_]   Start LSP    [_a_]   Apply code action   [_q_]   Quit
+      [_r_]   Restart LSP
       "
         ("s" lsp :exit t)
         ("r" lsp-workspace-restart :exit t)
+        ("a" lsp-execute-code-action :exit t)
         ("q" nil))
 
   (bind-key "C-c l" 'hydra-lsp/body)
