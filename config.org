@@ -709,17 +709,17 @@ Displays available keybindings in a popup
   (use-package direnv
     :config
     (direnv-mode))
-(defhydra hydra-de (:hint nil)
+  (defhydra hydra-de (:hint nil)
+        "
+            ^Allow^          ^Update^                     ^Other^
+      ----------------------------------------------------------------------------------------------------
+      [_a_]   Allow    [_u_]   Update Environment   [_q_]   Quit
       "
-          ^Allow^          ^Update^                     ^Other^
-    ----------------------------------------------------------------------------------------------------
-    [_a_]   Allow    [_u_]   Update Environment   [_q_]   Quit
-    "
-      ("a" direnv-allow :exit t)
-      ("u" direnv-update-environment :exit t)
-      ("q" nil))
+        ("a" direnv-allow :exit t)
+        ("u" direnv-update-environment :exit t)
+        ("q" nil))
 
-(bind-key "C-c d" 'hydra-de/body)
+  (bind-key "C-c d" 'hydra-de/body)
 #+END_SRC
 ** Haskell
 *** Haskell mode
@@ -743,7 +743,7 @@ Displays available keybindings in a popup
                   '(warning . haskell-hlint)))))
 #+END_SRC
 *** Hindent
-#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package hindent
     :config
     (add-hook 'haskell-mode-hook 'hindent-mode))
@@ -789,12 +789,8 @@ Displays available keybindings in a popup
     :hook (haskell-mode)
     :config
     (setq lsp-haskell-process-path-hie "ghcide"
+          lsp-haskell-set-hlint t
           lsp-haskell-process-args-hie '()))
-
-  ;; (lsp-define-stdio-client lsp-haskell "haskell" #'lsp-haskell--get-root
-  ;;              ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log"))
-  ;;        ;; '("hie" "--lsp" "-d" "-l" "/tmp/hie.log" "--vomit"))
-  ;;        (funcall lsp-haskell-process-wrapper-function (lsp--haskell-hie-command)))
 #+END_SRC
 **** LSP UI
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
