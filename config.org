@@ -786,11 +786,12 @@ Displays available keybindings in a popup
 **** LSP Haskell
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-haskell
-    :hook (haskell-mode)
-    :config
-    (setq lsp-haskell-process-path-hie "ghcide"
-          lsp-haskell-set-hlint t
-          lsp-haskell-process-args-hie '()))
+    :after (haskell-mode lsp-mode)
+    :custom
+    (lsp-haskell-process-path-hie "hie-wrapper")
+    :hook
+    (haskell-mode                              . lsp-haskell-set-hlint-on)
+    (haskell-mode                              . lsp-haskell-set-completion-snippets-on))
 #+END_SRC
 **** LSP UI
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
