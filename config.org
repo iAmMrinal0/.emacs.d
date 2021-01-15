@@ -36,7 +36,7 @@
   (global-set-key (kbd "C-c w") 'prelude-swap-meta-and-super)
 #+END_SRC
 ** Start server
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (require 'server)
   (unless (server-running-p)
     (server-start))
@@ -66,14 +66,17 @@ Add =package-archives= and install =use-package=, =exec-path-from-shell=
   (setq-default use-package-always-ensure t)
 #+END_SRC
 *** Exec path from shell
-#+BEGIN_SRC emacs-lisp :results output silent
-  ;; (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)
-    ;; )
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
 #+END_SRC
 *** Load secrets
 #+BEGIN_SRC emacs-lisp :results silent :tangle no
   (load "~/.emacs.d/secrets")
+#+END_SRC
+*** Enable custom themes
+#+BEGIN_SRC emacs-lisp :results output silent
+  (setq custom-safe-themes t)
 #+END_SRC
 ** Snippets
 *** Smarter move beginning of line
@@ -353,6 +356,12 @@ For =current match= and =total match= information in the mode-line
   (use-package diminish
     :diminish (auto-revert-mode visual-line-mode))
 #+END_SRC
+*** Editorconfig
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package editorconfig
+    :config
+    (editorconfig-mode 1))
+#+END_SRC
 *** Expand Region [[https://github.com/magnars/expand-region.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package expand-region
@@ -361,7 +370,7 @@ For =current match= and =total match= information in the mode-line
     ("C-=" . er/expand-region))
 #+END_SRC
 *** Flycheck
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package flycheck
     :defer t
     :config
@@ -435,7 +444,7 @@ Use flyspell for =markdown= files
 #+END_SRC
 
 *** Google-this [[https://github.com/Malabarba/emacs-google-this][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package google-this
     :diminish (google-this-mode)
     :bind
@@ -721,14 +730,34 @@ Displays available keybindings in a popup
 
   (bind-key "C-c d" 'hydra-de/body)
 #+END_SRC
+** Dhall
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package dhall-mode
+    :ensure t
+    :config
+    (setq
+      ;; uncomment the next line to disable automatic format
+      dhall-format-at-save nil
+
+      ;; comment the next line to use unicode syntax
+      dhall-format-arguments (\` ("--ascii"))
+
+      ;; header-line is obsoleted by lsp-mode
+      dhall-use-header-line nil))
+#+END_SRC
+** Groovy
+#+BEGIN_SRC emacs-lisp :results output silent
+  (use-package groovy-mode
+    :defer t
+    :config
+    (setq groovy-indent-offset 2))
+#+END_SRC
 ** Haskell
 *** Haskell mode
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package haskell-mode
     :bind
-    ([f8] . haskell-navigate-imports)
-    :config
-    (setq haskell-stylish-on-save t))
+    ([f8] . haskell-navigate-imports))
 #+END_SRC
 *** Dante
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
@@ -759,13 +788,10 @@ Displays available keybindings in a popup
 **** LSP mode
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-mode
-    :hook (haskell-mode . lsp)
+    :hook ((dhall-mode haskell-mode) . lsp)
     :init
     (add-hook 'haskell-mode-hook 'direnv-update-environment)
     :commands lsp
-    ;; :bind
-    ;; (("C-x nl" . lsp)
-    ;;  ("C-x nr" . lsp-restart-workspace))
     :config
     (setq lsp-prefer-flymake nil))
 
@@ -788,10 +814,10 @@ Displays available keybindings in a popup
   (use-package lsp-haskell
     :after (haskell-mode lsp-mode)
     :custom
-    (lsp-haskell-process-path-hie "hie-wrapper")
+    (lsp-haskell-process-path-hie "haskell-language-server-wrapper")
     :hook
-    (haskell-mode                              . lsp-haskell-set-hlint-on)
-    (haskell-mode                              . lsp-haskell-set-completion-snippets-on))
+    (haskell-mode . lsp-haskell-set-hlint-on)
+    (haskell-mode . lsp-haskell-set-completion-snippets-on))
 #+END_SRC
 **** LSP UI
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
@@ -805,12 +831,6 @@ Displays available keybindings in a popup
 #+END_SRC
 ** JavaScript
 #+BEGIN_SRC emacs-lisp :results output silent
-  ;; company backend for tern
-  ;; http://ternjs.net/doc/manual.html#emacs
-  (use-package company-tern
-    :defer t
-    :diminish (company-mode))
-
   (use-package js2-mode
     :defer 5
     :mode ("\\.js\\'" . js2-mode)
@@ -828,30 +848,11 @@ Displays available keybindings in a popup
     (js2r-add-keybindings-with-prefix "C-c C-m")
     (add-hook 'js2-mode-hook 'js2-refactor-mode))
 
-  (use-package tern
-    :diminish (tern-mode)
-    :defer t
-    :config
-    (defun my-js-mode-hook ()
-      "Hook for `js-mode'."
-      (set (make-local-variable 'company-backends)
-           '((company-tern company-files))))
-     (setq tern-command (append tern-command '("--no-port-file")))
-    (add-hook 'js2-mode-hook 'my-js-mode-hook)
-    (add-hook 'js2-mode-hook 'company-mode)
-    (add-hook 'js2-mode-hook 'tern-mode))
-
-  (use-package tern-auto-complete
-    :defer 5
-    :init
-    (tern-ac-setup))
-
   (use-package xref-js2
     :defer 5
     :init
     (add-hook 'js2-mode-hook (lambda ()
                                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
-
 #+END_SRC
 ** Nix
 *** Nix-mode
@@ -861,7 +862,7 @@ Displays available keybindings in a popup
 #+END_SRC
 ** PureScript
 *** PureScript mode
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package purescript-mode
     :commands purescript-mode
     :mode (("\\.purs$" . purescript-mode))
@@ -869,7 +870,7 @@ Displays available keybindings in a popup
     (add-hook 'purescript-mode-hook 'turn-on-purescript-decl-scan))
 #+END_SRC
 *** Psc-ide
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package psc-ide
     :diminish (purescript-indentation-mode psc-ide-mode company-mode)
     :config
@@ -935,14 +936,10 @@ Displays available keybindings in a popup
           web-mode-enable-auto-closing t
           web-mode-enable-auto-quoting t))
 #+END_SRC
-* Miscellaneous
-** Twitter
-*** twittering-mode
+** YAML
 #+BEGIN_SRC emacs-lisp :results output silent
-  (use-package twittering-mode
-    :defer t
-    :config
-    (setq twittering-use-master-password t))
+  (use-package yaml-mode
+    :defer t)
 #+END_SRC
 * Documentation
 *** Markdown
@@ -1011,10 +1008,10 @@ For the fringe on the left with live changes
 #+END_SRC
 *** Rainbow mode for Programming modes
 #+BEGIN_SRC emacs-lisp :results output silent
-    (use-package rainbow-mode
-      :diminish rainbow-mode
-      :init
-      (add-hook 'prog-mode-hook 'rainbow-mode))
+  (use-package rainbow-mode
+    :diminish rainbow-mode
+    :init
+    (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 ** Themes
 *** Doom theme and custom theme modifications (currently unused)
@@ -1056,10 +1053,11 @@ For the fringe on the left with live changes
     (sml/setup))
 #+END_SRC
 *** Zerodark modeline theme
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package zerodark-modeline
-    :load-path "custom/zerodark/"
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package zerodark-theme
+    ;; :load-path "~/.emacs.d/custom/zerodark/"
     :config
+    ;; (load-theme 'zerodark nil)
     (zerodark-setup-modeline-format))
 #+END_SRC
 *** Powerline modeline with =wave= format
@@ -1072,7 +1070,7 @@ For the fringe on the left with live changes
     (powerline-default-theme))
 #+END_SRC
 ** Ligatures
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (defun my-correct-symbol-bounds (pretty-alist)
       "Prepend a TAB character to each symbol in this alist,
   this way compose-region called by prettify-symbols-mode

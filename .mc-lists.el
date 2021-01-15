@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        beginning-of-visual-line
         comment-line
         end-of-visual-line
         haskell-indentation-common-electric-command
@@ -13,6 +14,7 @@
         hydra-mc/mc/sort-regions
         hydra-mc/nil
         indent-for-tab-command
+        org-self-insert-command
         smarter-move-beginning-of-line
         sp-unwrap-sexp
         yaml-electric-backspace
@@ -20,6 +22,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
         helm-show-kill-ring
         hydra-mc/body
         hydra-mc/mc/insert-numbers
@@ -29,4 +32,5 @@
         hydra-mc/mc/mark-previous-like-this-and-exit
         hydra-mc/mc/skip-to-next-like-this
         hydra-mc/mc/unmark-next-like-this
+        hydra-mc/mc/unmark-previous-like-this
         ))
