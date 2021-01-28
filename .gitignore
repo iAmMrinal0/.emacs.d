@@ -23,3 +23,5 @@ config.el
 snippets/
 transient/
 .lsp-session-v1
+eln-cache/
+projectile.cache

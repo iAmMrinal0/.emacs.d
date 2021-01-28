@@ -814,9 +814,10 @@ Displays available keybindings in a popup
     :after (haskell-mode lsp-mode)
     :custom
     (lsp-haskell-process-path-hie "haskell-language-server-wrapper")
-    :hook
-    (haskell-mode . lsp-haskell-set-hlint-on)
-    (haskell-mode . lsp-haskell-set-completion-snippets-on))
+    ;; :hook
+    ;; (haskell-mode . lsp-haskell-set-hlint-on)
+    ;; (haskell-mode . lsp-haskell-set-completion-snippets-on)
+    )
 #+END_SRC
 **** LSP UI [[https://github.com/emacs-lsp/lsp-ui][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
