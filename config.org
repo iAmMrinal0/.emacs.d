@@ -792,7 +792,8 @@ Displays available keybindings in a popup
     (add-hook 'haskell-mode-hook 'direnv-update-environment)
     :commands lsp
     :config
-    (setq lsp-prefer-flymake nil))
+    (setq lsp-prefer-flymake nil
+          lsp-modeline-diagnostics-enable t))
 
   (defhydra hydra-lsp (:hint nil)
         "
@@ -812,19 +813,21 @@ Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-haskell
     :after (haskell-mode lsp-mode)
+    :defer t
     :custom
     (lsp-haskell-process-path-hie "haskell-language-server-wrapper")
-    ;; :hook
-    ;; (haskell-mode . lsp-haskell-set-hlint-on)
-    ;; (haskell-mode . lsp-haskell-set-completion-snippets-on)
-    )
+    :hook
+    (haskell-mode . lsp-haskell-set-hlint-on)
+    (haskell-mode . lsp-haskell-set-completion-snippets-on))
 #+END_SRC
 **** LSP UI [[https://github.com/emacs-lsp/lsp-ui][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-ui
     :commands lsp-ui-mode
+    :hook (prog-mode . lsp-ui-mode)
     :config
-    (setq lsp-ui-flycheck-enable t))
+    (setq lsp-ui-flycheck-enable t
+          lsp-ui-doc-position 'bottom))
   ;; (use-package company-lsp :commands company-lsp)
   ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
   ;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
@@ -1114,8 +1117,10 @@ For the fringe on the left with live changes
 
   (my-add-to-multiple-hooks
    'my-set-ligatures
-   '(purescript-mode-hook
-     haskell-mode-hook))
+   '(
+     ;; purescript-mode-hook
+     haskell-mode-hook
+     ))
 #+END_SRC
 ** Rainbow delimiters [[https://github.com/Fanael/rainbow-delimiters][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
