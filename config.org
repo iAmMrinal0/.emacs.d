@@ -245,6 +245,10 @@ Pressing =C-u C-SPC= to pop mark every time is cumbersome, this setting helps to
 #+BEGIN_SRC emacs-lisp :results output silent
   (setq auto-window-vscroll nil)
 #+END_SRC
+*** Disable native async comp warnings
+#+BEGIN_SRC emacs-lisp :results output silent
+  (setq native-comp-async-report-warnings-errors nil)
+#+END_SRC
 ** Files
 *** Auto Revert Mode
 Revert buffers automatically when files are changed externally
@@ -626,6 +630,12 @@ For better/faster PDF rendering
     :init
     (pdf-tools-install))
 #+END_SRC
+*** Good scroll
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+  (use-package good-scroll
+    :config
+    (good-scroll-mode 1))
+#+END_SRC
 *** Smartparens [[https://github.com/Fuco1/smartparens][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package smartparens
@@ -868,17 +878,18 @@ Displays available keybindings in a popup
   (use-package nix-mode
     :mode ("\\.nix$" . nix-mode))
 #+END_SRC
-** PureScript (currently unused)
+** PureScript
 *** PureScript mode
-#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package purescript-mode
     :commands purescript-mode
     :mode (("\\.purs$" . purescript-mode))
     :init
-    (add-hook 'purescript-mode-hook 'turn-on-purescript-decl-scan))
+    (add-hook 'purescript-mode-hook 'turn-on-purescript-decl-scan)
+    (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
 #+END_SRC
 *** Psc-ide
-#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package psc-ide
     :diminish (purescript-indentation-mode psc-ide-mode company-mode)
     :config

@@ -14,7 +14,9 @@
         hydra-mc/mc/sort-regions
         hydra-mc/nil
         indent-for-tab-command
+        lsp-ui-doc--handle-mouse-movement
         org-self-insert-command
+        org-shiftright
         smarter-move-beginning-of-line
         sp-unwrap-sexp
         yaml-electric-backspace
@@ -32,6 +34,8 @@
         hydra-mc/mc/mark-previous-like-this
         hydra-mc/mc/mark-previous-like-this-and-exit
         hydra-mc/mc/skip-to-next-like-this
+        hydra-mc/mc/skip-to-previous-like-this
         hydra-mc/mc/unmark-next-like-this
         hydra-mc/mc/unmark-previous-like-this
+        kill-region
         ))
