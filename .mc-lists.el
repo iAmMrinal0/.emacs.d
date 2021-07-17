@@ -17,6 +17,8 @@
         lsp-ui-doc--handle-mouse-movement
         org-self-insert-command
         org-shiftright
+        purescript-indentation-delete-backward-char
+        purescript-indentation-delete-char
         smarter-move-beginning-of-line
         sp-unwrap-sexp
         yaml-electric-backspace

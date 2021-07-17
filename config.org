@@ -224,9 +224,10 @@ Pressing =C-u C-SPC= to pop mark every time is cumbersome, this setting helps to
 #+END_SRC
 *** Startup messages
 #+BEGIN_SRC emacs-lisp :results output silent
-(setq inhibit-startup-message t
-      initial-scratch-message ""
-      inhibit-startup-echo-area-message t)
+  (setq inhibit-startup-message t
+        initial-scratch-message ""
+        initial-major-mode 'text-mode
+        inhibit-startup-echo-area-message t)
 #+END_SRC
 *** Split window Vertically
 #+BEGIN_SRC emacs-lisp :results output silent
@@ -881,19 +882,19 @@ Displays available keybindings in a popup
 ** PureScript
 *** PureScript mode
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
-  (use-package purescript-mode
-    :commands purescript-mode
-    :mode (("\\.purs$" . purescript-mode))
-    :init
-    (add-hook 'purescript-mode-hook 'turn-on-purescript-decl-scan)
-    (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation))
+    (use-package purescript-mode
+      :commands purescript-mode
+      :mode (("\\.purs$" . purescript-mode))
+      :config
+      (add-hook 'purescript-mode-hook #'turn-on-purescript-decl-scan)
+      (add-hook 'purescript-mode-hook #'turn-on-purescript-indentation))
 #+END_SRC
 *** Psc-ide
-#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package psc-ide
     :diminish (purescript-indentation-mode psc-ide-mode company-mode)
     :config
-    (setq psc-ide-rebuild-on-save nil
+    (setq psc-ide-rebuild-on-save t
           psc-ide-use-npm-bin t
           psc-ide-editor-mode t)
     :bind
