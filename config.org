@@ -810,11 +810,12 @@ Displays available keybindings in a popup
             ^Start^              ^Action^                    ^Other^
       ----------------------------------------------------------------------------------------------------
       [_s_]   Start LSP    [_a_]   Apply code action   [_q_]   Quit
-      [_r_]   Restart LSP
+      [_r_]   Restart LSP  [_f_]   Format code
       "
         ("s" lsp :exit t)
         ("r" lsp-workspace-restart :exit t)
         ("a" lsp-execute-code-action :exit t)
+        ("f" lsp-format-buffer :exit t)
         ("q" nil))
 
   (bind-key "C-c c" 'hydra-lsp/body)
@@ -828,7 +829,9 @@ Displays available keybindings in a popup
     (lsp-haskell-process-path-hie "haskell-language-server-wrapper")
     :hook
     (haskell-mode . lsp-haskell-set-hlint-on)
-    (haskell-mode . lsp-haskell-set-completion-snippets-on))
+    (haskell-mode . lsp-haskell-set-completion-snippets-on)
+    :config
+    (setq lsp-haskell-formatting-provider "fourmolu"))
 #+END_SRC
 **** LSP UI [[https://github.com/emacs-lsp/lsp-ui][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
