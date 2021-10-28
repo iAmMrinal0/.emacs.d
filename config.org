@@ -554,14 +554,14 @@ Use flyspell for =markdown= files
     (keychain-refresh-environment))
 #+END_SRC
 *** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package keyfreq
     :config
     (keyfreq-mode t)
     (keyfreq-autosave-mode t))
 #+END_SRC
 *** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
 (use-package multiple-cursors
     :commands (mc/add-cursor-on-click
                mc/edit-beginning-of-lines
@@ -637,7 +637,7 @@ For better/faster PDF rendering
     (good-scroll-mode 1))
 #+END_SRC
 *** Smartparens [[https://github.com/Fuco1/smartparens][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package smartparens
     :diminish (smartparens-mode)
     :defer 5
@@ -651,7 +651,7 @@ For better/faster PDF rendering
 #+END_SRC
 *** Undo tree [[https://elpa.gnu.org/packages/undo-tree.html][Elpa]]
     For undo visualizations
-    #+BEGIN_SRC emacs-lisp :results output silent
+    #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
       (use-package undo-tree
         :diminish undo-tree-mode
         :bind
@@ -679,7 +679,7 @@ For better/faster PDF rendering
 #+END_SRC
 *** Which key [[https://github.com/justbur/emacs-which-key][GitHub]]
 Displays available keybindings in a popup
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
 (use-package which-key
     :defer t
     :diminish (which-key-mode)
@@ -701,14 +701,14 @@ Displays available keybindings in a popup
     (winum-mode))
 #+END_SRC
 *** Zop-to-char [[https://github.com/thierryvolpiatto/zop-to-char][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package zop-to-char
     :config
     (global-set-key [remap zap-to-char] 'zop-to-char))
 #+END_SRC
 * Programming
 ** Auto-complete [[https://github.com/auto-complete/auto-complete][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package auto-complete
     :defer t
     :init
@@ -723,7 +723,7 @@ Displays available keybindings in a popup
     (add-to-list 'auto-mode-alist '("\\.cl\\'" . clean-mode)))
 #+END_SRC
 ** Direnv [[https://github.com/wbolster/emacs-direnv][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package direnv
     :config
     (direnv-mode))
@@ -740,7 +740,7 @@ Displays available keybindings in a popup
   (bind-key "C-c d" 'hydra-de/body)
 #+END_SRC
 ** Dhall [[https://github.com/psibi/dhall-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package dhall-mode
     :ensure t
     :config
@@ -755,7 +755,7 @@ Displays available keybindings in a popup
       dhall-use-header-line nil))
 #+END_SRC
 ** Groovy [[https://github.com/Groovy-Emacs-Modes/groovy-emacs-modes][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package groovy-mode
     :defer t
     :config
@@ -763,7 +763,7 @@ Displays available keybindings in a popup
 #+END_SRC
 ** Haskell
 *** Haskell mode [[https://github.com/haskell/haskell-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package haskell-mode
     :bind
     ([f8] . haskell-navigate-imports))
