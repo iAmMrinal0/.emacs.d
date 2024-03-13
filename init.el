@@ -51,7 +51,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-(org-babel-load-file (expand-file-name (concat user-emacs-directory "config.org")))
+(org-babel-load-file "config.org")
 
 (provide 'init)
 ;;; init.el ends here
