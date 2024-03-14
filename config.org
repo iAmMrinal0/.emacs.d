@@ -787,7 +787,7 @@ Displays available keybindings in a popup
     (add-hook 'haskell-mode-hook 'hindent-mode))
 #+END_SRC
 *** Hasky-extensions [[https://github.com/hasky-mode/hasky-extensions][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (use-package hasky-extensions
     :bind
     ("C-c y" . hasky-extensions)
