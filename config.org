@@ -386,19 +386,19 @@ For =current match= and =total match= information in the mode-line
     (global-flycheck-mode))
 
       ;; (defhydra hydra-flycheck (:hint nil))
-    (defhydra hydra-flycheck
-      (:pre (progn (setq hydra-hint-display-type t) (flycheck-list-errors))
-       :post (progn (setq hydra-hint-display-type nil) (quit-windows-on "*Flycheck errors*"))
-       :hint nil)
-      "Errors"
-      ("f"  flycheck-error-list-set-filter                            "Filter")
-      ("j"  flycheck-next-error                                       "Next")
-      ("k"  flycheck-previous-error                                   "Previous")
-      ("gg" flycheck-first-error                                      "First")
-      ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-      ("q"  nil))
+  ;;   (defhydra hydra-flycheck
+  ;;     (:pre (progn (setq hydra-hint-display-type t) (flycheck-list-errors))
+  ;;      :post (progn (setq hydra-hint-display-type nil) (quit-windows-on "*Flycheck errors*"))
+  ;;      :hint nil)
+  ;;     "Errors"
+  ;;     ("f"  flycheck-error-list-set-filter                            "Filter")
+  ;;     ("j"  flycheck-next-error                                       "Next")
+  ;;     ("k"  flycheck-previous-error                                   "Previous")
+  ;;     ("gg" flycheck-first-error                                      "First")
+  ;;     ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+  ;;     ("q"  nil))
 
-  (bind-key "C-c f" 'hydra-flycheck/body)
+  ;; (bind-key "C-c f" 'hydra-flycheck/body)
 #+END_SRC
 *** Flyspell [[https://github.com/emacs-mirror/emacs/blob/master/lisp/textmodes/flyspell.el][GitHub]]
 Use flyspell for =markdown= files
