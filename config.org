@@ -1027,12 +1027,10 @@ For the fringe on the left with live changes
   (use-package git-gutter
     :diminish (git-gutter-mode)
     :defer t
-    :init (global-git-gutter-mode t)
+    :hook (prog-mode . git-gutter-mode)
     :config
-    (setq git-gutter:added-sign "++"
-          git-gutter:deleted-sign "--"
-          git-gutter:modified-sign "~~"
-          git-gutter:update-interval 1)
+    (global-git-gutter-mode t)
+    (setq git-gutter:update-interval 0.02)
     ;; (set-face-foreground 'git-gutter:modified-sign "#a36fff")
     ;; (set-face-foreground 'git-gutter:added-sign "#198844")
     ;; (set-face-foreground 'git-gutter:deleted-sign "#cc342b")
