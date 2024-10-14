@@ -355,13 +355,24 @@ For =current match= and =total match= information in the mode-line
           uniquify-after-kill-buffer-p t
           uniquify-ignore-buffers-re "^\\*"))
 #+END_SRC
+*** Copilot
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package copilot
+    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+    :init
+    (add-hook 'prog-mode-hook 'copilot-mode)
+    :config
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+    :ensure t)
+#+END_SRC
 *** Diminish [[https://github.com/emacsmirror/diminish][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
   (use-package diminish
     :diminish (auto-revert-mode visual-line-mode))
 #+END_SRC
 *** Editorconfig [[https://github.com/editorconfig/editorconfig-emacs][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package editorconfig
     :config
     (editorconfig-mode 1))
@@ -542,6 +553,10 @@ Use flyspell for =markdown= files
     :init
     (ido-vertical-mode t)
     (setq ido-vertical-define-keys 'C-n-C-p))
+#+END_SRC
+*** jsonrpc
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package jsonrpc)
 #+END_SRC
 *** Keychain [[https://github.com/tarsius/keychain-environment][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent
