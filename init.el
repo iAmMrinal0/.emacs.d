@@ -50,6 +50,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(package-initialize)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -67,6 +68,8 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+;; (setq set-debug-on-error t)
 
 (org-babel-load-file (expand-file-name (concat user-emacs-directory "config.org")))
 

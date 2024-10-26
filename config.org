@@ -12,7 +12,7 @@
   (global-set-key (kbd "C-c e") 'end-of-buffer)
 #+END_SRC
 *** Command and alt keys
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
   (setq mac-option-key-is-meta t)
   (setq mac-command-key-is-meta t)
   (setq mac-command-modifier 'meta)
@@ -42,33 +42,6 @@
     (server-start))
 #+END_SRC
 ** Package initializations
-*** Package archives
-Add =package-archives= and install =use-package=, =exec-path-from-shell=
-#+BEGIN_SRC emacs-lisp :results output silent
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (unless (package-installed-p 'exec-path-from-shell)
-      (package-refresh-contents)
-      (package-install 'exec-path-from-shell))
-
-  (eval-when-compile
-    (require 'use-package))
-
-  (setq-default use-package-always-ensure t)
-#+END_SRC
-*** Exec path from shell
-#+BEGIN_SRC emacs-lisp :results output silent :tangle no
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
-#+END_SRC
 *** Load secrets
 #+BEGIN_SRC emacs-lisp :results silent :tangle no
   (load "~/.emacs.d/secrets")
@@ -143,7 +116,7 @@ Add =package-archives= and install =use-package=, =exec-path-from-shell=
   (display-time)
 #+END_SRC
 *** Change prompts
-Make =yes= or =no= be =y= or =no=
+Make =yes= or =no= be =y= or =n=
 #+BEGIN_SRC emacs-lisp :results output silent
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
@@ -283,35 +256,44 @@ Revert buffers based on VC info
 #+END_SRC
 ** Projects
 *** Projectile [[https://github.com/bbatsov/projectile][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package projectile
+    :straight t
     :defer 5
     :init
     (setq projectile-keymap-prefix (kbd "C-c p"))
     (projectile-mode))
 #+END_SRC
 ** Packages
+*** Hydra [[https://github.com/abo-abo/hydra][GitHub]]
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package hydra
+    :straight t)
+#+END_SRC
 *** Ace-window [[https://github.com/abo-abo/ace-window][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package ace-window
+    :straight t
     :bind
     ("M-o" . ace-window)
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+END_SRC
 *** Ag [[https://github.com/Wilfred/ag.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package ag)
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package ag
+    :straight t)
 #+END_SRC
-
 *** All the icons [[https://github.com/domtronn/all-the-icons.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-  (use-package all-the-icons)
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package all-the-icons
+    :straight t)
 #+END_SRC
 *** Anzu [[https://github.com/winterTTr/ace-jump-mode][GitHub]]
 For =current match= and =total match= information in the mode-line
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package anzu
+    :straight t
     :diminish (anzu-mode)
     :defer 5
     :config
@@ -322,8 +304,9 @@ For =current match= and =total match= information in the mode-line
 #+END_SRC
 
 *** Avy [[https://github.com/abo-abo/avy][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package avy
+    :straight t
     :bind
     ("C-:" . avy-goto-char)
     ("M-g g" . avy-goto-line)
@@ -339,15 +322,15 @@ For =current match= and =total match= information in the mode-line
 #+END_SRC
 
 *** Buffer show binding just to kill buffers easily
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package bs
+    :straight t
     :bind
     ("M-g M-b" . bs-show))
 #+END_SRC
 *** Buffer Uniquify [[https://github.com/emacs-mirror/emacs/blob/master/lisp/uniquify.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package uniquify
-    :ensure nil
     :defer 2
     :config
     (setq uniquify-buffer-name-style 'forward
@@ -359,27 +342,40 @@ For =current match= and =total match= information in the mode-line
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package copilot
     :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-    :init
-    (add-hook 'prog-mode-hook 'copilot-mode)
+    :hook
+    (prog-mode . copilot-mode)
+    :bind (:map copilot-completion-map
+                ("<tab>" . 'copilot-accept-completion)
+                ("TAB" . 'copilot-accept-completion))
+                ;; ("C-TAB" . 'copilot-accept-completion-by-word)
+                ;; ("C-<tab>" . 'copilot-accept-completion-by-word)
     :config
-    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+    ;; (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    ;; (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+    (add-to-list 'copilot-indentation-alist '(prog-mode . 2))
+    (add-to-list 'copilot-indentation-alist '(org-mode . 2))
+    (add-to-list 'copilot-indentation-alist '(text-mode . 2))
+    (add-to-list 'copilot-indentation-alist '(closure-mode . 2))
+    (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode . 2))
     :ensure t)
 #+END_SRC
 *** Diminish [[https://github.com/emacsmirror/diminish][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package diminish
+    :straight t
     :diminish (auto-revert-mode visual-line-mode))
 #+END_SRC
 *** Editorconfig [[https://github.com/editorconfig/editorconfig-emacs][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package editorconfig
+    :straight t
     :config
     (editorconfig-mode 1))
 #+END_SRC
 *** Expand Region [[https://github.com/magnars/expand-region.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package expand-region
+    :straight t
     :defer t
     :bind
     ("C-=" . er/expand-region))
@@ -387,6 +383,8 @@ For =current match= and =total match= information in the mode-line
 *** Flycheck [[https://github.com/flycheck/flycheck][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package flycheck
+    :straight t
+    :functions hydra-flycheck
     :defer t
     :config
     (define-key flycheck-mode-map flycheck-keymap-prefix nil)
@@ -412,14 +410,16 @@ For =current match= and =total match= information in the mode-line
 #+END_SRC
 *** Flyspell [[https://github.com/emacs-mirror/emacs/blob/master/lisp/textmodes/flyspell.el][GitHub]]
 Use flyspell for =markdown= files
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package flyspell
+    :straight t
     :defer t
     :mode ("'\\.md\\'" . flyspell-mode))
 #+END_SRC
 *** Free keys [[https://github.com/Fuco1/free-keys][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-(use-package free-keys)
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+(use-package free-keys
+  :straight t)
 #+END_SRC
 *** Git
 **** Git Messenger [[https://github.com/syohex/emacs-git-messenger][GitHub]] (currently unused)
@@ -438,8 +438,9 @@ Use flyspell for =markdown= files
     ("C-c C-x t" . git-timemachine))
 #+END_SRC
 **** Magit [[https://github.com/magit/magit][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package magit
+    :straight t
     :defer 5
     :bind
     (("C-x g" . magit-status)
@@ -467,8 +468,9 @@ Use flyspell for =markdown= files
     (google-this-mode 1))
 #+END_SRC
 *** Helm [[https://github.com/emacs-helm/helm][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package helm
+    :straight t
     :defer 5
     :diminish (helm-mode)
     :bind
@@ -507,29 +509,28 @@ Use flyspell for =markdown= files
 
 #+END_SRC
 **** Helm Projectile [[https://github.com/bbatsov/helm-projectile][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package helm-projectile
+    :straight t
     :defer 5
     :config
     (helm-projectile-on))
 #+END_SRC
 *** Helm Ag [[https://github.com/emacsorphanage/helm-ag][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package helm-ag
+    :straight t
     :config
     (setq helm-ag-fuzzy-match t
           helm-ag-base-command "ag --nocolor --nogroup --ignore-case --hidden"))
 #+END_SRC
 *** Hungry Delete [[https://github.com/nflath/hungry-delete][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-(use-package hungry-delete
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package hungry-delete
+    :straight t
     :diminish (hungry-delete-mode)
     :config
     (global-hungry-delete-mode))
-#+END_SRC
-*** Hydra [[https://github.com/abo-abo/hydra][GitHub]]
-#+BEGIN_SRC emacs-lisp
-  (use-package hydra)
 #+END_SRC
 *** Ido (currently unused)
 **** Flx-ido
@@ -556,11 +557,13 @@ Use flyspell for =markdown= files
 #+END_SRC
 *** jsonrpc
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
-  (use-package jsonrpc)
+  (use-package jsonrpc
+    :straight t)
 #+END_SRC
 *** Keychain [[https://github.com/tarsius/keychain-environment][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package keychain-environment
+    :straight t
     :defer t
     :init
     (keychain-refresh-environment))
@@ -568,6 +571,7 @@ Use flyspell for =markdown= files
 *** Key Frequency [[https://github.com/dacap/keyfreq][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package keyfreq
+    :straight t
     :config
     (keyfreq-mode t)
     (keyfreq-autosave-mode t))
@@ -575,6 +579,8 @@ Use flyspell for =markdown= files
 *** Multiple Cursors [[https://github.com/magnars/multiple-cursors.el][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
 (use-package multiple-cursors
+    :straight t
+    :functions hydra-mc
     :commands (mc/add-cursor-on-click
                mc/edit-beginning-of-lines
                mc/edit-lines
@@ -639,6 +645,7 @@ Use flyspell for =markdown= files
 For better/faster PDF rendering
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package pdf-tools
+    :straight t
     :init
     (pdf-tools-install))
 #+END_SRC
@@ -651,6 +658,7 @@ For better/faster PDF rendering
 *** Smartparens [[https://github.com/Fuco1/smartparens][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package smartparens
+    :straight t
     :diminish (smartparens-mode)
     :defer 5
     :bind
@@ -663,41 +671,45 @@ For better/faster PDF rendering
 #+END_SRC
 *** Undo tree [[https://elpa.gnu.org/packages/undo-tree.html][Elpa]]
     For undo visualizations
-    #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
-      (use-package undo-tree
-        :diminish undo-tree-mode
-        :bind
-        ("C-z" . undo)
-        ("C-S-z" . undo-tree-redo)
-        :config
-        (setq undo-tree-auto-save-history t
-              undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history/")))
-              undo-tree-visualizer-diff t
-              undo-tree-visualizer-timestamps t)
-        :init
-        (global-undo-tree-mode))
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package undo-tree
+    :straight t
+    :diminish undo-tree-mode
+    :bind
+    ("C-z" . undo)
+    ("C-S-z" . undo-tree-redo)
+    :config
+    (setq undo-tree-auto-save-history t
+          undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "undo-tree-history/")))
+          undo-tree-visualizer-diff t
+          undo-tree-visualizer-timestamps t)
+    :init
+    (global-undo-tree-mode))
 #+END_SRC
 *** Regex (Base) [[https://github.com/emacs-mirror/emacs/blob/master/lisp/emacs-lisp/re-builder.el][GitHub Mirror]]
-#+BEGIN_SRC emacs-lisp :results output silent
-(use-package re-builder
-  :init
-  (setq reb-re-syntax 'string))
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package re-builder
+    :straight t
+    :init
+    (setq reb-re-syntax 'string))
 #+END_SRC
 *** Smartscan [[https://github.com/mickeynp/smart-scan][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package smartscan
-    :init
-    (global-smartscan-mode))
+    :straight t
+    :config
+    (smartscan-mode t))
 #+END_SRC
 *** Which key [[https://github.com/justbur/emacs-which-key][GitHub]]
 Displays available keybindings in a popup
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
-(use-package which-key
-    :defer t
-    :diminish (which-key-mode)
-    :init
-    (which-key-setup-side-window-bottom)
-    (which-key-mode))
+  (use-package which-key
+      :straight t
+      :defer t
+      :diminish (which-key-mode)
+      :init
+      (which-key-setup-side-window-bottom)
+      (which-key-mode))
 #+END_SRC
 *** Winum Mode [[https://github.com/deb0ch/emacs-winum][GitHub]] (currently unused)
 #+BEGIN_SRC emacs-lisp :results output silent :tangle no
@@ -715,6 +727,7 @@ Displays available keybindings in a popup
 *** Zop-to-char [[https://github.com/thierryvolpiatto/zop-to-char][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package zop-to-char
+    :straight t
     :config
     (global-set-key [remap zap-to-char] 'zop-to-char))
 #+END_SRC
@@ -722,6 +735,7 @@ Displays available keybindings in a popup
 ** Auto-complete [[https://github.com/auto-complete/auto-complete][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package auto-complete
+    :straight t
     :defer t
     :init
     (global-auto-complete-mode t)
@@ -737,6 +751,8 @@ Displays available keybindings in a popup
 ** Direnv [[https://github.com/wbolster/emacs-direnv][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package direnv
+    :straight t
+    :functions hydra-de
     :config
     (direnv-mode))
   (defhydra hydra-de (:hint nil)
@@ -754,6 +770,7 @@ Displays available keybindings in a popup
 ** Dhall [[https://github.com/psibi/dhall-mode][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package dhall-mode
+    :straight t
     :ensure t
     :config
     (setq
@@ -777,6 +794,7 @@ Displays available keybindings in a popup
 *** Haskell mode [[https://github.com/haskell/haskell-mode][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package haskell-mode
+    :straight t
     :bind
     ([f8] . haskell-navigate-imports))
 #+END_SRC
@@ -809,7 +827,9 @@ Displays available keybindings in a popup
 **** LSP mode [[https://github.com/emacs-lsp/lsp-mode][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-mode
-    :hook ((dhall-mode haskell-mode) . lsp)
+    :straight t
+    :hook ((dhall-mode haskell-mode nix-mode) . lsp)
+    :functions hydra-lsp
     :init
     (add-hook 'haskell-mode-hook 'direnv-update-environment)
     :commands lsp
@@ -835,6 +855,7 @@ Displays available keybindings in a popup
 **** LSP Haskell [[https://github.com/emacs-lsp/lsp-haskell][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-haskell
+    :straight t
     :after (haskell-mode lsp-mode)
     :defer t
     :custom
@@ -848,6 +869,7 @@ Displays available keybindings in a popup
 **** LSP UI [[https://github.com/emacs-lsp/lsp-ui][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-ui
+    :straight t
     :commands lsp-ui-mode
     :hook (prog-mode . lsp-ui-mode)
     :config
@@ -859,10 +881,13 @@ Displays available keybindings in a popup
 #+END_SRC
 ** JavaScript
 *** js2-mode [[https://github.com/mooz/js2-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package js2-mode
+    :straight t
     :defer 5
     :mode ("\\.js\\'" . js2-mode)
+    :hook
+    (js-mode . js2-minor-mode)
     :init
     (setq js2-include-node-externs t)
     (setq js2-basic-offset 2)
@@ -871,8 +896,9 @@ Displays available keybindings in a popup
     (setq js-switch-indent-offset 2))
 #+END_SRC
 *** js2-refactor [[https://github.com/magnars/js2-refactor.el][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package js2-refactor
+    :straight t
     :diminish (js2-refactor-mode)
     :defer t
     :config
@@ -880,8 +906,9 @@ Displays available keybindings in a popup
     (add-hook 'js2-mode-hook 'js2-refactor-mode))
 #+END_SRC
 *** xref-js2 [[https://github.com/NicolasPetton/xref-js2][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package xref-js2
+    :straight t
     :defer 5
     :init
     (add-hook 'js2-mode-hook (lambda ()
@@ -891,22 +918,21 @@ Displays available keybindings in a popup
 *** lsp-nix
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package lsp-nix
-    :ensure lsp-mode
     :after (lsp-mode)
     :demand t
     :custom
     (lsp-nix-nil-formatter ["nixfmt"]))
 #+END_SRC
 *** Nix-mode [[https://github.com/NixOS/nix-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package nix-mode
-    ;; :mode ("\\.nix$" . nix-mode)
-    :hook (nix-mode . lsp-deferred)
-    :ensure t)
+    :straight t
+    :mode ("\\.nix\\'" . nix-mode)
+    :hook (nix-mode . lsp-deferred))
 #+END_SRC
 ** PureScript
 *** PureScript mode
-#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+#+BEGIN_SRC emacs-lisp :results output silent :tangle no
     (use-package purescript-mode
       :commands purescript-mode
       :mode (("\\.purs$" . purescript-mode))
@@ -953,8 +979,9 @@ Displays available keybindings in a popup
 
 #+END_SRC
 ** Snippets [[https://github.com/joaotavora/yasnippet][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package yasnippet
+    :straight t
     :defer t
     :diminish (yas-minor-mode)
     :config
@@ -982,24 +1009,27 @@ Displays available keybindings in a popup
           web-mode-enable-auto-quoting t))
 #+END_SRC
 ** YAML [[https://github.com/yoshiki/yaml-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package yaml-mode
+    :straight t
     :defer t)
 #+END_SRC
 * Documentation
 *** Markdown [[https://github.com/defunkt/markdown-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
-    (use-package markdown-mode
-      :defer t
-      :commands (markdown-mode gfm-mode)
-      :mode ("\\.md\\'" . gfm-mode)
-      :init
-      (setq markdown-command "multimarkdown"))
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (use-package markdown-mode
+    :straight t
+    :defer t
+    :commands (markdown-mode gfm-mode)
+    :mode ("\\.md\\'" . gfm-mode)
+    :init
+    (setq markdown-command "multimarkdown"))
 #+END_SRC
 *** Org Mode
 **** Org (Base) [[https://github.com/bzg/org-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package org
+    :straight t
     :defer t
     :bind
     ("C-c l" . org-store-link)
@@ -1022,8 +1052,9 @@ Displays available keybindings in a popup
   ;;       '((sequence "TODO(t)" "IN-PROGRESS(i)" "CANCELLED(c)" DONE(d)"))))
 #+END_SRC
 **** Org bullets [[https://github.com/sabof/org-bullets][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package org-bullets
+    :straight t
     :after org
     :init
     ;; (setq org-bullets-bullet-list '("●"))
@@ -1036,6 +1067,7 @@ Displays available keybindings in a popup
 For the fringe on the left with live changes
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package git-gutter
+    :straight t
     :diminish (git-gutter-mode)
     :defer t
     :hook (prog-mode . git-gutter-mode)
@@ -1050,8 +1082,9 @@ For the fringe on the left with live changes
     (add-hook 'git-gutter:update-hooks 'magit-not-reverted-hook))
 #+END_SRC
 *** Rainbow mode for Programming modes [[https://github.com/emacsmirror/rainbow-mode][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package rainbow-mode
+    :straight t
     :diminish rainbow-mode
     :init
     (add-hook 'prog-mode-hook 'rainbow-mode))
@@ -1080,15 +1113,17 @@ For the fringe on the left with live changes
    '(font-lock-keyword-face       ((t (:foreground "#51afef" :italic italic)))))
 #+END_SRC
 *** Gruvbox theme [[https://github.com/greduan/emacs-theme-gruvbox][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package gruvbox-theme
+    :straight t
     :config
     (load-theme 'gruvbox-dark-hard t))
 #+END_SRC
 ** Mode-line
 *** Smart-mode-line [[https://github.com/Malabarba/smart-mode-line][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package smart-mode-line
+    :straight t
     :init
     (setq sml/theme 'respectful
           sml/mode-width 'full
@@ -1098,7 +1133,8 @@ For the fringe on the left with live changes
 *** Zerodark modeline theme [[https://github.com/NicolasPetton/zerodark-theme][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package zerodark-theme
-    :config
+    :straight t
+    :init
     (zerodark-setup-modeline-format))
 #+END_SRC
 *** Powerline modeline with =wave= format (currently unused)
@@ -1111,7 +1147,7 @@ For the fringe on the left with live changes
     (powerline-default-theme))
 #+END_SRC
 ** Ligatures
-#+BEGIN_SRC emacs-lisp :results output silent :tangle no
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (defun my-correct-symbol-bounds (pretty-alist)
       "Prepend a TAB character to each symbol in this alist,
   this way compose-region called by prettify-symbols-mode
@@ -1158,8 +1194,9 @@ For the fringe on the left with live changes
      ))
 #+END_SRC
 ** Rainbow delimiters [[https://github.com/Fanael/rainbow-delimiters][GitHub]]
-#+BEGIN_SRC emacs-lisp :results output silent
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package rainbow-delimiters
+    :straight t
     :defer t
     :init
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
