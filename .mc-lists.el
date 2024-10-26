@@ -28,6 +28,7 @@
 (setq mc/cmds-to-run-once
       '(
         beginning-of-buffer
+        helm-confirm-and-exit-minibuffer
         helm-show-kill-ring
         hydra-mc/body
         hydra-mc/mc/insert-numbers

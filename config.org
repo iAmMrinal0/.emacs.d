@@ -51,6 +51,11 @@
   (setq custom-safe-themes t)
 #+END_SRC
 ** Snippets
+*** Disable bell
+#+BEGIN_SRC emacs-lisp :results output silent :tangle yes
+  (setq visible-bell t)
+  (setq ring-bell-function 'ignore)
+#+END_SRC
 *** Smarter move beginning of line
 #+BEGIN_SRC emacs-lisp :results output silent
   (defun smarter-move-beginning-of-line (arg)
@@ -1029,8 +1034,7 @@ Displays available keybindings in a popup
 **** Org (Base) [[https://github.com/bzg/org-mode][GitHub]]
 #+BEGIN_SRC emacs-lisp :results output silent :tangle yes
   (use-package org
-    :straight t
-    :defer t
+    :straight (:type built-in)
     :bind
     ("C-c l" . org-store-link)
     ("C-c a" . org-agenda)
