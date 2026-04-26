@@ -2,14 +2,22 @@
 
 ;;; Commentary:
 ;; This file loads the literate org file which contains all Emacs customizations.
+;;
+;; Package management strategy (works in both modes):
+;;
+;; - Nix-wrapped emacs (emacsWithPackagesFromUsePackage):
+;;   bundled packages are on load-path and registered with package.el, so
+;;   `:ensure t' becomes a no-op and use-package just loads them.
+;;
+;; - Plain emacs (no Nix):
+;;   we add MELPA, ensure use-package is installed, and `:ensure t'
+;;   triggers package.el to install missing packages from MELPA on first run.
+;;
+;; The literate config in config.org therefore uses `:ensure t' (not
+;; `:straight t') so the same configuration works either way.
 
 ;;; Code:
 
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,8 +29,6 @@
    ["#3c3836" "#fb4933" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
  '(compilation-message-face 'default)
  '(fci-rule-color "#373b41")
- '(package-selected-packages
-   '(good-scroll smooth-scroll telephone-line dhall-mode direnv k8s-mode groovy-mode docker all-the-icons lsp-haskell lsp-ui lsp-mode helm-lsp company-lsp dockerfile-mode editorconfig avy-menu hasky-extensions zones company-cabal hlint-refactor dante nix-mode yaml-mode pulseaudio-control playerctl vimrc-mode helm-swoop hydra twittering-mode tide move-text diminish psci yasnippet-snippets keychain-environment hardcore-mode rainbow-delimiters rjsx-mode zop-to-char helm-flycheck paradox exec-path-from-shell smartscan helm-ag psc-ide purescript-mode sudoku 2048-game gruvbox-theme restclient zerodark-theme pdf-tools ace-window git-messenger google-this spacemacs winum org avy smart-mode-line tern-auto-complete js2-refactor keyfreq hungry-delete which-key markdown-mode helm-projectile vmd-mode xref-js2 helm-flx helm-fuzzier spacemacs-theme highlight-numbers pacmacs smartparens zpresent nodejs-repl xkcd web-mode use-package undo-tree spinner smart-mode-line-powerline-theme rainbow-mode py-autopep8 projectile org-bullets multiple-cursors magit js-comint jedi ido-vertical-mode helm git-timemachine git-gutter free-keys flycheck flx-ido expand-region emojify elpy company-tern anzu ag ac-js2))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    '((20 . "#cc6666")
@@ -50,26 +56,19 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(package-initialize)
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package)
+(require 'package)
+(unless (assoc "melpa" package-archives)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+(unless package--initialized
+  (package-initialize))
 
-;; (setq set-debug-on-error t)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
 
 (org-babel-load-file (expand-file-name (concat user-emacs-directory "config.org")))
 
