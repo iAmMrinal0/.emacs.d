@@ -28,3 +28,4 @@ projectile.cache
 /.cache/
 straight/*
 !straight/versions
+result*
